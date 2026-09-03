@@ -1,0 +1,2016 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+<meta name="theme-color" content="#07060a">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Trust No One — Flat 2.0</title>
+<style>
+:root{
+  --bg:#07060a;
+  --ink:#f5f3f8;
+  --dim:#b6b1c2;
+  --muted:#7f7a8d;
+  --line:#221e2b;
+  --line2:#2f2939;
+  --s1:#0f0d15;
+  --s2:#16131f;
+  --s3:#1d1926;
+  --red:#e01e46;
+  --red2:#ff4d6d;
+  --deep:#7a0f27;
+  --gold:#f0c96b;
+  --green:#31d17f;
+  --blue:#5fb3f5;
+  --violet:#a97bff;
+  --display:"Helvetica Neue",Helvetica,Arial,sans-serif;
+  --body:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+  --r:16px;
+  --pad:18px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+input,textarea{-webkit-user-select:text;user-select:text}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);
+  min-height:100dvh;overscroll-behavior:none;
+  background-image:
+    radial-gradient(130% 60% at 50% -12%, rgba(224,30,70,.22), transparent 62%),
+    radial-gradient(80% 40% at 8% 108%, rgba(169,123,255,.10), transparent 60%),
+    radial-gradient(80% 40% at 95% 100%, rgba(95,179,245,.07), transparent 60%);
+  background-attachment:fixed;
+}
+body::after{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:80;opacity:.16;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/></filter><rect width='140' height='140' filter='url(%23n)' opacity='.5'/></svg>");
+}
+#app{max-width:540px;margin:0 auto;padding:calc(16px + env(safe-area-inset-top)) 18px calc(48px + env(safe-area-inset-bottom));min-height:100dvh;position:relative;z-index:1}
+h1,h2,h3{margin:0;font-family:var(--display);font-weight:800;letter-spacing:-.025em;line-height:.94}
+p{margin:0 0 12px;line-height:1.55}
+button{font-family:inherit;font-size:16px;cursor:pointer;border:0;background:none;color:inherit}
+button:focus-visible,input:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:12px}
+a{color:var(--blue)}
+
+/* type */
+.tXL{font-size:clamp(46px,15.5vw,74px);line-height:.82;text-transform:uppercase;letter-spacing:-.045em;font-weight:800}
+.tL{font-size:clamp(30px,8.6vw,42px);text-transform:uppercase;line-height:.92;letter-spacing:-.03em}
+.tM{font-size:22px;text-transform:uppercase;letter-spacing:-.01em}
+.tS{font-size:17px;font-weight:800;letter-spacing:-.01em}
+.kick{font-family:var(--mono);font-size:10.5px;letter-spacing:.24em;color:var(--muted);text-transform:uppercase}
+.lede{font-size:16.5px;color:var(--dim);line-height:1.55}
+.sm{font-size:13.5px;color:var(--dim);line-height:1.55}
+.xs{font-size:11.5px;color:var(--muted);line-height:1.5}
+.mono{font-family:var(--mono)}
+.red{color:var(--red2)}.gold{color:var(--gold)}.green{color:var(--green)}.blue{color:var(--blue)}.vio{color:var(--violet)}.dimc{color:var(--muted)}
+.cap{text-transform:uppercase}
+.ctr{text-align:center}
+
+/* layout */
+.stack{display:flex;flex-direction:column;gap:11px}
+.stack.tight{gap:8px}
+.row{display:flex;gap:10px}
+.row>*{flex:1}
+.sp{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.rule{height:1px;background:var(--line);margin:16px 0;border:0}
+.gap{height:16px}
+.gap.lg{height:26px}
+
+/* buttons */
+.btn{display:block;width:100%;padding:17px 18px;border-radius:14px;background:var(--s2);
+  border:1px solid var(--line2);font-weight:700;font-size:16px;text-align:center;
+  transition:transform .09s ease,background .16s,border-color .16s;position:relative;overflow:hidden}
+.btn:active{transform:scale(.98)}
+.btn.p{background:linear-gradient(175deg,#f52a54,#a30f2c);border-color:#ff5c7c;
+  box-shadow:0 14px 34px -18px rgba(224,30,70,1),inset 0 1px 0 rgba(255,255,255,.22)}
+.btn.g{background:linear-gradient(175deg,#f6d789,#c9a244);color:#1c1406;border-color:#f8e3a4;
+  box-shadow:0 14px 34px -18px rgba(240,201,107,.9)}
+.btn.ok{background:linear-gradient(175deg,#3ee08c,#1a9457);color:#04180d;border-color:#57eda0}
+.btn.gh{background:transparent;border-color:var(--line)}
+.btn.s{padding:13px 14px;font-size:14.5px;border-radius:12px}
+.btn.xsb{padding:9px 12px;font-size:13px;border-radius:10px}
+.btn[disabled]{opacity:.32;pointer-events:none}
+.btn.sel{border-color:var(--red2);background:#26101a;box-shadow:inset 0 0 0 1px var(--red2),0 0 0 4px rgba(224,30,70,.10)}
+.btn.selg{border-color:var(--green);background:#0d2318;box-shadow:inset 0 0 0 1px var(--green)}
+.btn .l{display:flex;justify-content:space-between;align-items:center;gap:10px;text-align:left}
+.btn .l .r{font-weight:400;font-size:11.5px;color:var(--muted);text-align:right;flex-shrink:0}
+
+/* surfaces */
+.card{background:var(--s1);border:1px solid var(--line);border-radius:var(--r);padding:var(--pad)}
+.card.t{background:linear-gradient(180deg,var(--s2),var(--s1))}
+.card.hot{border-color:#43141f;background:linear-gradient(180deg,#1c0d13,#100b11)}
+.card.cool{border-color:#1b2c3a;background:linear-gradient(180deg,#0b131a,#0c0e13)}
+.card.gld{border-color:#4b3d17;background:linear-gradient(180deg,#1a160b,#110f0a)}
+.card.vi{border-color:#2f2148;background:linear-gradient(180deg,#150f22,#0f0c15)}
+.card.grn{border-color:#194a30;background:linear-gradient(180deg,#0b1b13,#0b0f0c)}
+.dossier{position:relative;border:1px solid #35202a;border-radius:var(--r);padding:20px 18px;
+  background:repeating-linear-gradient(0deg,rgba(255,255,255,.016) 0 1px,transparent 1px 5px),linear-gradient(180deg,#141019,#0d0b11)}
+.stamp{position:absolute;top:-9px;right:14px;font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;
+  color:#ff6b86;background:#180b10;border:1px solid #7d2137;padding:4px 8px;border-radius:4px;transform:rotate(2.5deg)}
+.pill{display:inline-flex;align-items:center;gap:5px;font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;
+  padding:5px 9px;border-radius:99px;border:1px solid var(--line2);color:var(--muted);white-space:nowrap}
+.pill.on{color:var(--gold);border-color:#5a4a1e;background:#181307}
+.pill.rd{color:var(--red2);border-color:#5c1a2a;background:#1a0b10}
+.pill.gr{color:var(--green);border-color:#1c4a31;background:#08170f}
+.redact{background:#2c2733;color:transparent;border-radius:4px;user-select:none;letter-spacing:.02em}
+.tag{display:inline-block;font-size:11px;padding:3px 8px;border-radius:99px;background:#1c1826;color:var(--muted);margin:0 5px 5px 0}
+
+/* header */
+.top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:16px;min-height:34px}
+.icb{padding:9px 12px;border:1px solid var(--line2);border-radius:11px;font-size:12.5px;background:var(--s1);font-weight:600}
+.crumb{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;color:var(--muted)}
+.rail{display:flex;gap:4px;margin-bottom:18px}
+.rail i{height:3px;flex:1;background:#221e2b;border-radius:99px}
+.rail i.on{background:var(--red)}
+.rail i.now{background:linear-gradient(90deg,var(--red),var(--gold))}
+
+/* inputs */
+input[type=text]{width:100%;padding:15px 14px;border-radius:13px;background:#0c0a11;border:1px solid var(--line2);
+  color:var(--ink);font-size:17px;font-family:inherit;font-weight:600}
+input::placeholder{color:#524d5e;font-weight:400}
+.pRow{display:flex;gap:9px;align-items:center}
+.pRow .del{padding:0 14px;height:52px;border-radius:12px;border:1px solid var(--line);color:#ff6b86;background:#160b10;font-size:18px}
+.dot{width:11px;height:11px;border-radius:99px;flex-shrink:0}
+.chip{display:inline-flex;align-items:center;gap:7px;padding:8px 13px;border-radius:99px;background:var(--s2);
+  border:1px solid var(--line2);font-size:14px;font-weight:700}
+.chip.out{opacity:.38;text-decoration:line-through}
+.wrap{display:flex;flex-wrap:wrap;gap:8px}
+
+/* switch */
+.sw{width:50px;height:29px;border-radius:99px;background:#241f2e;border:1px solid var(--line2);position:relative;flex:0 0 50px}
+.sw i{position:absolute;top:2px;left:2px;width:23px;height:23px;border-radius:99px;background:#6d6779;transition:.18s}
+.sw.on{background:#3d0f1e;border-color:#7d2137}
+.sw.on i{left:23px;background:var(--red2)}
+
+/* timer ring */
+.ring{position:relative;width:236px;height:236px;margin:0 auto}
+.ring svg{transform:rotate(-90deg);display:block}
+.ring .mid{position:absolute;inset:0;display:grid;place-items:center;flex-direction:column}
+.clock{font-family:var(--display);font-size:56px;font-weight:800;letter-spacing:-.045em;font-variant-numeric:tabular-nums;line-height:1}
+.clock.warn{color:var(--red2)}
+
+/* table */
+table{width:100%;border-collapse:collapse;font-size:14px}
+td,th{padding:10px 4px;border-bottom:1px solid var(--line);text-align:left}
+th{font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--muted);font-weight:400}
+td.n{text-align:right;font-variant-numeric:tabular-nums;font-weight:700}
+
+/* meters */
+.meter{display:flex;align-items:center;gap:10px;margin:8px 0}
+.meter .lab{width:104px;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--muted)}
+.meter .trk{flex:1;height:7px;background:#1e1a27;border-radius:99px;overflow:hidden}
+.meter .trk>i{display:block;height:100%;background:linear-gradient(90deg,#7a0f27,#ff4d6d);border-radius:99px}
+.meter .val{width:32px;text-align:right;font-size:12px;font-variant-numeric:tabular-nums;color:var(--dim)}
+
+/* lock */
+.lockbox{width:80px;height:80px;margin:0 auto 16px;border-radius:24px;border:1px solid #43141f;
+  background:linear-gradient(180deg,#1c0d13,#100b11);display:grid;place-items:center;font-size:33px;
+  box-shadow:0 20px 50px -24px rgba(224,30,70,.9)}
+.avatar{width:64px;height:64px;border-radius:22px;display:grid;place-items:center;font-size:26px;font-weight:800;margin:0 auto 14px;
+  font-family:var(--display);color:#0a0810}
+
+/* motion */
+@keyframes up{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes pop{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:none}}
+@keyframes shk{0%,100%{transform:translate(0)}15%{transform:translate(-8px,3px)}30%{transform:translate(7px,-4px)}45%{transform:translate(-6px,-2px)}60%{transform:translate(5px,3px)}80%{transform:translate(-3px,1px)}}
+@keyframes puls{0%,100%{opacity:.4}50%{opacity:1}}
+@keyframes wipe{from{transform:translateY(0)}to{transform:translateY(-101%)}}
+@keyframes flick{0%,100%{opacity:1}44%{opacity:.3}47%{opacity:1}53%{opacity:.15}57%{opacity:1}}
+@keyframes sweep{from{background-position:-160% 0}to{background-position:260% 0}}
+@keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.045)}}
+.anim{animation:up .34s cubic-bezier(.2,.8,.3,1) both}
+.anim2{animation:pop .3s cubic-bezier(.2,.9,.3,1) both}
+.d1{animation-delay:.05s}.d2{animation-delay:.11s}.d3{animation-delay:.17s}.d4{animation-delay:.23s}
+.shake{animation:shk .55s ease}
+.puls{animation:puls 1.5s ease-in-out infinite}
+.flick{animation:flick 1.2s steps(1) infinite}
+.breathe{animation:breathe 3.2s ease-in-out infinite}
+.shine{background:linear-gradient(100deg,transparent 20%,rgba(255,255,255,.22) 45%,transparent 70%);
+  background-size:200% 100%;animation:sweep 2.4s ease-in-out infinite;-webkit-background-clip:text;background-clip:text;color:transparent}
+#wipe{position:fixed;inset:0;background:#07060a;z-index:90;pointer-events:none;display:none}
+#wipe.go{display:block;animation:wipe .44s .2s cubic-bezier(.7,0,.2,1) forwards}
+#toast{position:fixed;left:50%;bottom:30px;transform:translateX(-50%);z-index:95;background:#1d1926;border:1px solid var(--line2);
+  padding:11px 18px;border-radius:99px;font-size:13.5px;font-weight:600;display:none;box-shadow:0 16px 40px -18px #000}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+body.noanim *{animation:none!important;transition:none!important}
+
+/* ---------- noir / case-file layer ---------- */
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:79;
+  background:radial-gradient(120% 70% at 50% -6%, rgba(255,214,150,.055), transparent 52%),
+             radial-gradient(110% 100% at 50% 46%, transparent 42%, rgba(0,0,0,.62) 100%)}
+.lamp{position:fixed;top:-170px;left:50%;transform:translateX(-50%);width:560px;height:360px;pointer-events:none;z-index:0;
+  background:conic-gradient(from 180deg at 50% 0%, transparent 0deg, rgba(255,208,140,.13) 17deg, rgba(255,208,140,.05) 27deg, transparent 42deg);
+  filter:blur(16px)}
+.case{font-family:var(--mono);font-size:9.5px;letter-spacing:.22em;color:#6a6476;text-transform:uppercase}
+.tape{position:absolute;width:78px;height:21px;background:rgba(228,216,182,.10);border:1px solid rgba(228,216,182,.12);
+  box-shadow:0 2px 8px rgba(0,0,0,.4)}
+.tape.tl{top:-10px;left:-13px;transform:rotate(-23deg)}
+.tape.br{bottom:-10px;right:-13px;transform:rotate(-23deg)}
+.scan{position:relative;overflow:hidden}
+.scan::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:repeating-linear-gradient(0deg,rgba(255,255,255,.028) 0 1px,transparent 1px 3px)}
+.fp{position:absolute;right:10px;bottom:8px;width:82px;height:82px;opacity:.055;pointer-events:none}
+@keyframes stampin{0%{transform:scale(2.7) rotate(-19deg);opacity:0}55%{transform:scale(.93) rotate(-8deg);opacity:1}100%{transform:scale(1) rotate(-8deg);opacity:.94}}
+.inkstamp{display:inline-block;border:3px double var(--red2);color:var(--red2);padding:9px 20px;border-radius:7px;
+  font-family:var(--display);font-weight:800;letter-spacing:.1em;text-transform:uppercase;font-size:15px;
+  transform:rotate(-8deg);opacity:.94;animation:stampin .55s cubic-bezier(.2,1.5,.4,1) both;
+  box-shadow:inset 0 0 22px rgba(224,30,70,.18)}
+.inkstamp.gr{border-color:var(--green);color:var(--green);box-shadow:inset 0 0 22px rgba(49,209,127,.16)}
+.board{position:relative;padding-left:30px}
+.board .thread{position:absolute;left:5px;top:14px;bottom:14px;width:2px;
+  background:linear-gradient(180deg,transparent,rgba(224,30,70,.55) 12%,rgba(224,30,70,.55) 88%,transparent)}
+.board .ev{position:relative}
+.board .ev::before{content:"";position:absolute;left:-30px;top:22px;width:11px;height:11px;border-radius:99px;
+  background:var(--red);box-shadow:0 0 0 4px rgba(224,30,70,.16)}
+.board .ev.blank::before{background:#3a3446;box-shadow:0 0 0 4px rgba(90,84,105,.14)}
+.seal{width:96px;height:96px;margin:0 auto 18px;border-radius:99px;display:grid;place-items:center;font-size:34px;
+  background:radial-gradient(circle at 34% 30%,#ff5f7d,#8e1029 62%,#5c0a1b);
+  box-shadow:0 18px 44px -18px rgba(224,30,70,.95), inset 0 2px 10px rgba(255,255,255,.28), inset 0 -6px 14px rgba(0,0,0,.5)}
+.file-tab{display:inline-block;padding:6px 14px 5px;border-radius:8px 8px 0 0;background:#1d1926;border:1px solid var(--line2);
+  border-bottom:0;font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;color:var(--muted);margin-left:14px}
+.file-body{border-radius:0 var(--r) var(--r) var(--r);margin-top:-1px}
+@keyframes cur{50%{border-color:transparent}}
+.tw{display:inline-block;overflow:hidden;white-space:nowrap;border-right:2px solid var(--red2);
+  animation:tw 1s steps(28) both, cur .7s step-end infinite;vertical-align:bottom}
+@keyframes tw{from{width:0}to{width:100%}}
+.grade{height:2px;background:linear-gradient(90deg,transparent,var(--red),transparent);margin:14px 0;opacity:.5}
+
+</style>
+</head>
+<body>
+<div class="lamp"></div>
+<div id="app"></div>
+<div id="wipe"></div>
+<div id="toast"></div>
+<script>
+"use strict";
+/* ============================================================
+   CONTENT — SCENARIOS
+   tokens: {a} {b} {c} = random distinct players
+   format: [title, seconds, body, optionalSecretsArray]
+   ============================================================ */
+const SCEN = [
+/* ---------- FOOD / ORDERING IN ---------- */
+["THE ORDER",240,"₹640 left in the shared pool and everyone is hungry.\n\nOne order. One restaurant. Decide what's coming and who gets the bigger portion.",["You already ate an hour ago. Nobody knows.","You are broke this week and cannot put in your share. Handle it.","You have a coupon that only works on one specific place."]],
+["DELIVERY GUY IS DOWNSTAIRS",180,"He's been calling for six minutes. Somebody has to go down.\n\nIt is raining. Decide who, properly, with reasons."],
+["THE MISSING BIRYANI",240,"One box of biryani left the fridge and did not come back.\n\nHold court. Someone is responsible and everyone knows it wasn't {a}. Probably."],
+["SPLIT THE BILL",300,"Last month's food orders came to ₹4,860. Not everyone ate equally and everyone remembers it differently.\n\nSettle the whole month tonight."],
+["MIDNIGHT MAGGI",120,"Two packets. Everyone's awake. Nobody wants to cook.\n\nDecide who cooks and who eats. Sixty seconds of arguing, then commit."],
+["THE CHEAT MEAL",240,"{a} is on a cut and the group wants to order fried chicken.\n\nDecide as a group: do you order it, and does {a} get to veto?"],
+["ZOMATO ROULETTE",180,"Nobody will pick. Everyone says 'anything'.\n\nYou must land on ONE cuisine with full agreement. 'Anything' is banned from this conversation."],
+["THE TIP",120,"The delivery guy climbed four floors in the heat.\n\nDecide the tip and who pays it. Out of your own pocket, not the pool."],
+["LEFTOVER RIGHTS",180,"There is exactly one portion of last night's order left.\n\nWho has the claim? Argue precedent. Past behaviour counts as evidence."],
+["THE 2AM RUN",240,"Only one shop near the complex is still open.\n\nMake a list, agree a budget, and decide who walks. The person who walks picks the music for a week."],
+["FOOD POISONING TRIAL",240,"Somebody's stomach is gone and everybody blames a different order.\n\nEstablish what happened and ban one place from the group forever."],
+["THE SHARED PLATE",180,"One plate, several hands, no fairness.\n\nAgree a rule for shared food that will actually survive the week."],
+/* ---------- WEED / BONG / SMOKE ---------- */
+["BONG CLEANING DUTY",180,"The pipe is a crime scene and nobody has touched it in eleven days.\n\nDecide who cleans it. Bribery is fully legal here."],
+["THE LAST OF THE STASH",300,"There is enough for one proper session, not three.\n\nDecide how it gets used tonight — and who gets left out, if anyone.",["You already have a backup you haven't mentioned.","You put in the most money last time and nobody acknowledged it.","You genuinely don't want any tonight but saying so early loses you leverage."]],
+["WHO'S CRUSHING",120,"Somebody has to crush and nobody wants to.\n\nSettle it with an argument, not a coin. Whoever loses also finds the tobe."],
+["THE LIGHTER CENSUS",180,"There were six lighters in this flat on Sunday. There are now zero.\n\nHold an inquiry. Somebody is a lighter black hole and the group must name them."],
+["THE RUNS",240,"Somebody has to go make the run. It's late, it's a walk, and it's not fun.\n\nDecide who goes and what they get compensated with."],
+["SESSION RULES",300,"Write three house rules for sessions that everyone must follow for a month.\n\nEach player holds one veto. Use it or lose it."],
+["THE UNEVEN SPLIT",240,"Money in was uneven. Consumption was very uneven.\n\nRebalance it fairly. Everybody's memory of the last two weeks is suspiciously convenient."],
+["FILTER SHORTAGE",120,"Down to two filters and there are more of you than that.\n\nDecide the priority order. Explain your reasoning out loud."],
+["THE SMELL",180,"The neighbour's uncle asked a very pointed question in the lift today.\n\nDecide the cover story and who delivers it if it comes up again."],
+["THE PACT",240,"Someone proposes a full month off. No sessions, nothing.\n\nDebate it seriously. It only counts if everybody signs."],
+["ONE CIGARETTE",120,"One left in the pack. Three or more claimants.\n\nMake your case. No splitting it — that's cheating and everyone knows it."],
+["ASH TRAY POLITICS",180,"There are ashes on the table, the sill, and one alarming place nobody wants to identify.\n\nAssign cleaning duty and one permanent rule."],
+/* ---------- FIFA / GAMING ---------- */
+["FIFA RANKINGS",240,"Settle it: rank everyone in this room at FIFA, best to worst, as a group.\n\nThe ranking is binding until somebody wins a rematch."],
+["THE CONTROLLER",180,"One controller works properly. The other drifts left.\n\nDecide who gets the good one for the rest of the week."],
+["THE TRANSFER WINDOW",300,"You're building one shared Ultimate Team with a limited budget.\n\nEach person must argue for one signing. Only two make it in.",["You know one of the picks under discussion is badly overrated. You can't prove it.","You genuinely don't follow football and are guessing. Hide it or use it.","You already have the best card and want the budget spent elsewhere."]],
+["PENALTY SHOOTOUT LAW",180,"An argument about whether a goal counted has been going for twenty minutes.\n\nWrite a permanent house rule for disputes and get everyone to sign it."],
+["MOURJYA DOESN'T KNOW OFFSIDE",240,"Someone in this room does not actually understand football and has been bluffing for months.\n\nRun the trial. Ask questions. Reach a verdict."],
+["THE TOURNAMENT",300,"House tournament, one trophy, real stakes: winner is exempt from chores for two weeks.\n\nDecide the format, the seeding, and the handicaps. All must agree."],
+["RAGE QUIT COURT",180,"Somebody disconnected while losing 3-0 and is claiming a network issue.\n\nEstablish the truth and set the punishment."],
+["CO-OP OR VERSUS",120,"One TV, one evening, split opinion.\n\nDecide the night's format. Whoever loses the argument picks the food."],
+/* ---------- SPARKY THE CAT ---------- */
+["SPARKY'S GENDER",240,"It has been months. Nobody has confirmed anything. Everybody has a theory.\n\nReach a group verdict, with reasoning, and commit to it permanently."],
+["SPARKY'S FAVOURITE",300,"Establish, using evidence only, which person in this room Sparky actually likes most.\n\nSelf-nomination is allowed but you must be cross-examined."],
+["THE VET BILL",300,"Sparky needs a check-up: ₹2,400.\n\nSplit it. Some of you feed the cat daily. Some of you have never once bought litter."],
+["WHO LET SPARKY OUT",180,"The door was open for nine minutes. Sparky was found two floors down, unbothered.\n\nFind out who and decide the consequence."],
+["SPARKY'S DIET",240,"Somebody has been feeding Sparky things Sparky should not be eating.\n\nSet the rules and name the offender."],
+["THE ADOPTION PAPERS",300,"If everyone moves out after college, who actually takes Sparky?\n\nDecide it now, tonight, in writing. The other roommates get visitation."],
+["SPARKY ON THE BED",180,"One person's room is now permanently occupied by a cat and they claim they never agreed to this.\n\nSort out the sleeping arrangement."],
+["THE NAME AUDIT",180,"Somebody has been calling Sparky by a completely different name in private.\n\nInvestigate. Decide if this is allowed."],
+/* ---------- MOM JOKES / BANTER ---------- */
+["MOM JOKE MORATORIUM",240,"A proposal is on the table: a full ban on mom jokes in this flat for two weeks.\n\nDebate it. It passes only with unanimous agreement."],
+["THE ROAST TRIBUNAL",300,"One joke went too far last week and nobody has addressed it.\n\nDecide, as a group, whether an apology is owed and by whom."],
+["THE TIER LIST",240,"Rank everyone in this room by how funny they actually are.\n\nThe list gets read out loud at the end. No abstaining."],
+["COMEBACK DRAFT",180,"Each player must land one clean comeback on somebody in this room during the discussion.\n\nAt the end, vote on which one hit hardest."],
+["THE GROUP CHAT AUDIT",240,"Somebody screenshotted something from the group chat and sent it outside the group.\n\nEstablish who and whether it was actually a problem."],
+/* ---------- YUVAN / VIOLIN / FAME ---------- */
+["THE PRACTICE HOURS",240,"Violin practice is happening at hours that are objectively unreasonable.\n\nNegotiate a schedule that survives exam season."],
+["THE GIG",300,"One person in this room has a performance and needs the flat empty for a day of prep.\n\nDecide the compensation the others get."],
+["MANAGER FOR HIRE",300,"If somebody here actually blows up, who manages them and for what cut?\n\nNegotiate percentages now, while it's still theoretical."],
+["THE OPENING ACT",240,"A slot opened up and only one person from this flat can be attached to it.\n\nDecide who, and what they owe the others."],
+["THE CROWD",180,"Everyone is expected at a performance on a night when at least one person genuinely cannot go.\n\nWork out who is excused and what excuses count."],
+["THE INSTRUMENT INSURANCE",240,"Something expensive lives in this flat and somebody almost knocked it over.\n\nSet the rules for the room it lives in."],
+/* ---------- MANO / RECKLESSNESS ---------- */
+["THE YOUNGEST ROOMMATE",300,"The youngest person here does something reckless roughly twice a week.\n\nDecide as a group: one rule they must follow, and one privilege they keep."],
+["THE BIKE",240,"Someone rides like the road is a suggestion. Someone else needs a lift tomorrow.\n\nNegotiate the terms."],
+["BAIL FUND",300,"Set up a shared emergency fund. Decide the amount, who contributes what, and — crucially — who is allowed to use it.",["You know you're the most likely person to need it. Don't make that obvious.","You're the one who'd have to explain it to a parent. That's leverage.","You've already quietly saved for this. Reveal it or don't."]],
+["THE DARE",180,"A dare from last weekend is still outstanding and the person is trying to quietly let it expire.\n\nDecide whether it stands."],
+["THE APOLOGY TOUR",240,"Somebody in this room owes three different people an apology.\n\nDecide the order and whether the group backs them up."],
+/* ---------- MONSTER / SUBSTANCES / SLEEP ---------- */
+["THE LAST MONSTER",120,"One can in the fridge. It has been in there for two days and everybody has been eyeing it.\n\nWho gets it and why. Sixty seconds of arguing, then decide."],
+["CAFFEINE CURFEW",240,"Someone has not slept properly in nine days and everybody has noticed.\n\nAgree a house rule about energy drinks after midnight."],
+["THE FRIDGE INVENTORY",300,"Everything in the fridge gets assigned an owner right now.\n\nUnclaimed items become communal. Argue fast."],
+["THE ALL-NIGHTER PACT",240,"Deadline week. Decide who is staying up, who is sleeping, and what the rules are for waking people."],
+["DRY WEEK",300,"Proposal: one full week with nothing at all. No drinks, no sessions, nothing.\n\nWinner of the argument sets the terms."],
+["THE HANGOVER PROTOCOL",180,"Someone is going to be useless tomorrow morning.\n\nDecide who covers their responsibilities and what they owe in return."],
+/* ---------- COLLEGE / SRM KTR / PLACEMENTS ---------- */
+["HAVELOC PANIC",300,"A company just opened on the portal and the eligibility criteria are brutal.\n\nDecide as a group: do you all apply, or does somebody sit this one out to keep the others' odds up?",["Your CGPA quietly does not clear the cutoff. You haven't told anyone.","You already have an offer in hand you haven't mentioned to this room.","You have a referral you could give to exactly one person here."]],
+["THE ATTENDANCE PROBLEM",240,"Somebody is below 75% and the others are being asked to cover for them.\n\nDecide if you do it and what it costs them."],
+["THE PROJECT PARTNER",300,"Two of you can be in the same team. The third gets a random stranger.\n\nDecide who pairs up. It has to be an argument, not a friendship."],
+["MOCK INTERVIEW",240,"One person here interviews terribly and everyone knows it.\n\nRun a brutal but fair session and decide who most needs the prep slot."],
+["THE RESUME LIE",300,"Somebody's resume contains something that is, at best, aspirational.\n\nDecide as a group whether it stays."],
+["THE 8AM CLASS",180,"Only one of you needs to attend to mark the group present. Attendance is being taken seriously this week.\n\nDecide who goes."],
+["THE NOTES CARTEL",240,"One person has the notes everyone needs before the exam.\n\nNegotiate the price. Money, chores, favours — anything is currency."],
+["THE INTERNSHIP OFFER",300,"An offer arrived and taking it means leaving the flat for the summer.\n\nDecide whether the room stays held and who covers the rent gap."],
+["BACKLOG COURT",240,"Somebody is one paper away from a real problem.\n\nThe group decides the study plan and who enforces it."],
+["THE GROUP PRESENTATION",300,"Slides due in the morning. Nobody has started.\n\nDivide the work now, in detail, with names attached to each part."],
+["THE PLACEMENT PACT",300,"If one of you lands something big, what do the others get?\n\nNegotiate a real agreement. It has to be specific."],
+["THE PROXY",180,"Someone needs a proxy tomorrow and it carries actual risk.\n\nDecide who does it and what they get for it."],
+/* ---------- FLAT LOGISTICS ---------- */
+["THE RENT SPLIT",300,"One room is big and gets the sun. One is small and quiet. One has the balcony and the noise.\n\nAssign rooms and rent. Total must stay the same.",["You know the balcony room floods in the rains.","You know the small room shares a wall with the water pump.","You've already unofficially claimed a room. Defend it or trade it."]],
+["THE CHORE ROTA",300,"Every chore in this flat, assigned by name, for the next month.\n\nNo splitting a chore evenly to avoid the argument."],
+["THE WIFI BILL",240,"The bill tripled. Somebody downloaded something enormous and nobody is claiming it.\n\nDecide who pays what."],
+["WATER CAN DUTY",180,"The can is empty. It is heavy. Nobody has changed it in two weeks.\n\nAssign it permanently, or set up a rotation with a real penalty."],
+["THE AC WAR",240,"One person is cold. One person is dying. The bill is shared.\n\nAgree a temperature and a schedule."],
+["THE GUEST POLICY",300,"Somebody's friend has been here four nights in a row.\n\nWrite the guest rules. Each person gets one veto."],
+["THE LANDLORD CALL",240,"Something is broken and somebody has to call the owner and explain how.\n\nDecide who calls and what version of events they tell."],
+["THE DEPOSIT",300,"There's damage. The deposit is at risk.\n\nDecide who absorbs the cost and whether the truth goes to the owner."],
+["THE 4TH ROOMMATE",300,"A new person could move in and cut everyone's rent:\n\n• Loud, generous, cooks constantly\n• Quiet, tidy, extremely judgemental\n• Barely home, terrible with money\n\nPick one or refuse and pay more.",["You already know one of these candidates personally.","One of them has privately asked you for your vote.","You would rather pay more than share the bathroom again."]],
+["THE NOISE COMPLAINT",240,"The complex association wants a written response signed by everyone.\n\nSign, refuse, or negotiate. It must be unanimous."],
+["THE PARKING SPOT",180,"One spot, several vehicles, one very confident claim.\n\nSettle it."],
+["THE SHARED SPEAKER",180,"Aux rights for the next week. One person, one week.\n\nCampaign for it, then decide."],
+["THE WASHING MACHINE",240,"Somebody's clothes have been sitting in it since yesterday.\n\nSet the rules and the penalty for breaking them."],
+["THE BALCONY",240,"The balcony has become one person's private extension.\n\nRenegotiate access."],
+/* ---------- MONEY ---------- */
+["THE SHARED POOL",300,"₹3,000 in the shared pool. It has to be spent this week.\n\nAllocate every rupee. Everybody must agree on the final split."],
+["THE LOAN",240,"One person owes another and both remember the amount differently.\n\nEstablish the number and the deadline. The rest of the room arbitrates."],
+["THE SUBSCRIPTION CUTS",240,"Four shared subscriptions, budget for two.\n\nDecide which two survive.",["You are the only one actually paying for two of them.","One of them is on your account and you could keep it free.","You never use any of them but you're not saying that."]],
+["THE BIRTHDAY GIFT",240,"Somebody's birthday. One shared gift, uneven budgets, strong opinions.\n\nDecide the gift and the split."],
+["THE FINE",180,"There's a fine and it's genuinely unclear whose fault it was.\n\nAssign responsibility as a group."],
+["THE TRIP FUND",300,"A trip to Kolkata for everyone, or something better for fewer people.\n\nDecide."],
+/* ---------- KOLKATA / HOME ---------- */
+["GOING HOME",300,"Tickets are expensive and only some of you can go this weekend.\n\nDecide who takes the trip and who covers the flat."],
+["THE PARCEL FROM HOME",240,"Somebody's mother sent food. It is finite and excellent.\n\nDecide the distribution. The owner does not automatically win."],
+["KOLKATA VS HERE",240,"Argue it properly: is going home for the break actually better than staying?\n\nThe group must reach one position and defend it."],
+["THE FAMILY CALL",180,"Somebody's parents are calling and want to speak to the roommates.\n\nDecide the story before you pick up."],
+["THE PUJO PLAN",300,"Everyone wants different things from the same few days.\n\nBuild one plan that all of you will actually stick to."],
+/* ---------- GYM / BODY ---------- */
+["THE GYM PACT",240,"Somebody has been skipping for eleven days and blaming their schedule.\n\nSet the accountability rules and the punishment."],
+["THE SHARED SUPPLEMENT",240,"One tub, uneven contributions, wildly uneven scoops.\n\nSettle the accounts."],
+["SPOTTER RIGHTS",180,"One person keeps asking for a spot and never returns the favour.\n\nNegotiate."],
+["THE PROGRESS PIC",180,"Somebody wants a group progress photo. At least one person is strongly against it.\n\nDecide."],
+["THE BULK",300,"One person eating for size, one cutting, one shared food budget.\n\nAllocate it."],
+/* ---------- SOCIAL / CRUSH / DRAMA ---------- */
+["THE CRUSH CONFLICT",300,"Two people in this flat are interested in the same person.\n\nSort it out in front of everyone. Nobody leaves until there's a rule."],
+["THE WINGMAN",240,"Somebody needs backup this weekend and it costs the wingman their own evening.\n\nNegotiate the terms."],
+["THE TEXT",180,"A message is drafted and everybody has opinions.\n\nAgree on one version. It gets sent."],
+["THE PARTY LIST",240,"Everyone wants to invite one person the others do not like.\n\nAgree on exactly one guest."],
+["THE SECRET",300,"Somebody in this flat knows something about somebody else in this flat.\n\nDecide as a group whether secrets between roommates are allowed at all."],
+["THE PHOTO",180,"There is a photo that should not exist and somebody still has it.\n\nDecide its fate."],
+["THE BREAKUP COUNCIL",300,"One person is about to make a decision the others think is a mistake.\n\nAdvise them. They must actually commit at the end."],
+/* ---------- PURE PSYCHOLOGY / GAMES ---------- */
+["THE TRUST RANKING",300,"Rank everyone in this room from most to least trustworthy, out loud, as a group.\n\nOne list. Everyone signs off on it."],
+["ONE OF YOU IS LYING",240,"Each of you got a private statement. One of them is false.\n\nSay yours in your own words and find the fake.",["Your statement: 'I have never taken anything from this flat without asking.' — TRUE. Sell it.","Your statement: 'I have never lied to anyone in this room about money.' — TRUE. Sell it.","Your statement: 'I have never eaten someone else's food from this fridge.' — FALSE. Sell it anyway."]],
+["THE CONFESSION ROUND",240,"Everyone must confess one real thing they did in this flat and never admitted.\n\nThen decide which confession was the worst."],
+["DESERT ISLAND FLAT",300,"You're stuck with only three of these: the speaker, the router, the fridge, the AC, the console, the kettle.\n\nPick three, together."],
+["THE ELIMINATION",240,"If one person had to move out of this flat for a month, who and why?\n\nEveryone argues. The group decides."],
+["THE FAVOUR BANK",300,"Everyone states one favour they are owed and one they owe.\n\nSettle every debt in this room tonight."],
+["THE VETO CROWN",240,"Elect one person who can overrule the whole flat once a week for a month.\n\nCampaign, then decide."],
+["THE HONESTY HOUR",240,"Each player must say one true thing about somebody else in this room.\n\nThen decide which one was the most necessary."],
+["THE PREDICTION",240,"As a group, predict where each person in this room will be in five years.\n\nOne prediction each, agreed by everyone. It gets written down."],
+["THE SWAP",240,"Everyone must permanently give one possession to another person here. Nobody may refuse.\n\nDecide all the trades.",["You want what {a} owns far more than they realise.","You must not end this round having given anything to {b}.","Whatever happens, do not give up the thing you actually use most."]],
+["THE LIFEBOAT",240,"Only some of you make it into the boat. It is not everyone.\n\nArgue for your seat. Decide together who is left."],
+["THE JURY",300,"You are the entire jury for a stranger. The evidence is thin and you must be unanimous.\n\nGuilty or not.",["You privately noticed one detail that points to guilt.","You privately noticed one detail that points to innocence.","You have nothing. Both of the others might be bluffing."]],
+["THE TIME CAPSULE",240,"One object from this flat goes into a box for ten years.\n\nDecide which object and who opens it."],
+["THE HOUSE CONSTITUTION",300,"Write three permanent rules for this flat that survive everyone graduating.\n\nEach player has one veto."],
+["THE BLAME LOTTERY",180,"Something went wrong and someone external is going to be told a name.\n\nDecide the name."],
+["THE FINAL SLICE",60,"One slice. Everyone's claim. Sixty seconds.\n\nSettle it with an argument, not a race."],
+["THE SILENCE GAME",180,"Whoever speaks least this round is the most suspicious. That's the rule tonight.\n\nNow decide something — anything — as a group."],
+["THE TWO TRUTHS",240,"Everyone states two things about themselves. One is a lie.\n\nWork through the room and catch as many as you can."],
+["THE PROMISE",240,"Each person must make one promise to the flat that they will actually be held to.\n\nThe group approves or rejects each one."]
+];
+
+/* twist modifiers stacked onto scenarios to multiply variety */
+const TWISTS = [
+ null,null,null,null,
+ "TWIST: nobody may say the word 'no' this round. Refuse some other way.",
+ "TWIST: every proposal must be made on behalf of somebody else in the room.",
+ "TWIST: the youngest person in the room speaks last, every time.",
+ "TWIST: you must physically point at whoever you are talking about.",
+ "TWIST: any decision needs a full majority plus one person who genuinely doesn't want it.",
+ "TWIST: nobody may repeat a point that has already been made.",
+ "TWIST: every claim must come with a reason. 'Because I said so' is not one.",
+ "TWIST: whoever speaks first is automatically the last person to get what they want.",
+ "TWIST: Sparky gets one honorary vote. The group decides what Sparky wanted.",
+ "TWIST: no names for the first 90 seconds. Point, gesture, describe.",
+ "TWIST: every player must make one offer they would genuinely regret.",
+ "TWIST: the decision must be made in under half the time on the clock. Then defend it."
+];
+/* ============================================================
+   CONTENT — MISSIONS  [text, difficulty, counter-intel, category, auto?]
+   {a} {b} are two other players. Designed to be deniable.
+   ============================================================ */
+const MIS = [
+/* --- TRUST --- */
+["Get {a} to say out loud that they trust you.","E","Somebody tonight needs to hear the words 'I trust you' from a specific person. Be stingy with them.","TRUST"],
+["Get {a} to defend you the first time anybody doubts you.","M","Somebody is planning to get defended. If you feel the urge to jump in for someone, wait five seconds first.","TRUST"],
+["Get somebody to say the words 'I believe you'.","E","Certain phrases are worth points tonight. 'I believe you' is one of them. Say it carefully.","TRUST"],
+["Get {a} to tell you who they're voting for before the vote starts.","M","Somebody wants your vote out of you early. Don't announce it, not even to the person you trust most.","TRUST"],
+["Get both {a} and {b} to say your name inside a compliment.","M","Someone benefits from being complimented by name. Compliment behaviour, not people.","TRUST"],
+["Get accused early, then finish the round with {a} arguing on your side.","H","Somebody wants to be doubted and then rescued. If a defence feels too easy, it was set up.","TRUST"],
+["Get {a} to share something true they wouldn't normally say in front of everyone.","H","Somebody is fishing for a real confession tonight. Keep your honesty general.","TRUST"],
+["Get somebody to admit out loud that they suspected you and were wrong.","M","An apology is worth points to someone here. Don't hand out retractions.","TRUST"],
+["Get {a} to ask {b} whether they trust you.","H","Somebody wants to be talked about in the third person. Notice who keeps coming up.","TRUST"],
+["Get one person to publicly vouch for another, then get them to fall out before the timer ends.","X","Someone gains if an alliance forms and then breaks. If you back somebody, stay backed.","TRUST"],
+["Agree with {a} three separate times and get them to notice it out loud.","E","Somebody is agreeing with you on purpose tonight. Notice how often, and don't say it out loud.","TRUST"],
+/* --- NEGOTIATION --- */
+["End this round holding the biggest share of whatever is being split.","M","Somebody has a points reason to end up with the most tonight. Watch who quietly ends up on top.","NEG"],
+["Get {a} to offer you something before you ask for anything.","H","Somebody is waiting to be offered something. Make people ask out loud.","NEG"],
+["Get {a} to make the first real concession.","M","Whoever gives ground first is doing somebody a favour tonight. Hold.","NEG"],
+["Get the group to accept your proposal without changing a single part of it.","H","Somebody needs their proposal passed clean. Amend everything, even slightly.","NEG"],
+["Get {a} to give up something they said out loud that they wanted.","M","Somebody is trying to make a person fold on something they claimed. If you claim it, keep it.","NEG"],
+["Get everyone to agree on anything at all in the first two minutes.","E","Early agreement helps somebody tonight. Slow the first two minutes down.","NEG"],
+["Get the group to hand you a tiebreaker or a veto.","M","Somebody wants special powers tonight. Nobody should get a casting vote.","NEG"],
+["Convince the group to postpone one decision entirely.","E","Somebody scores if a decision doesn't happen. Close every open item.","NEG"],
+["End the round with {a} thinking they won while you took more.","X","Somebody plans to lose loudly and win quietly. Recount the outcome before you sign off.","NEG"],
+["Get somebody else to propose the exact outcome you secretly wanted.","H","Someone is planting an idea to have it echoed back. If an idea feels like yours, check where you heard it.","NEG"],
+["Stay mostly quiet while the others negotiate, then accept their deal and still come out ahead.","H","Somebody is planning to win by saying nothing. Drag the quiet ones into every decision.","NEG"],
+["Get a deal agreed that has one condition only you benefit from.","M","Read the fine print on anything agreed tonight. Somebody buried a clause.","NEG"],
+/* --- PSYCHOLOGY --- */
+["Make {a} reverse an opinion they stated earlier.","M","Somebody wins if a person here flips. Once you take a position tonight, keep it.","PSY"],
+["Catch {b} contradicting themselves and point it out to the room.","H","Somebody is waiting for you to trip over your own words. Keep your story short.","PSY"],
+["Get somebody to repeat an unusual phrase you used.","M","Someone is planting a phrase tonight. If a strange word starts spreading, don't be the one who spreads it.","PSY"],
+["Get {a} to argue in favour of something they said they disliked.","X","Somebody wants a person to switch sides completely. Don't argue for anything you called bad.","PSY"],
+["Get {b} to become suspicious of {a}.","M","Somebody is steering suspicion tonight. Ask yourself who first put a name in your head.","PSY"],
+["Make somebody laugh, then get them to agree with you within ten seconds.","E","Somebody is using jokes as a setup. Laugh, then think, then answer.","PSY"],
+["Ask {a} one question they answer in far more detail than they meant to.","M","One question tonight is a trap. Keep your answers to one sentence.","PSY"],
+["Get somebody to accuse another person of overthinking.","H","Somebody scores when the room dismisses careful thinking. Let people think.","PSY"],
+["Get {a} to apologise for something.","H","Somebody is fishing for an apology. Don't say sorry tonight unless you mean it.","PSY"],
+["Get one person to change their mind twice in the same round.","X","Somebody needs a person to flip-flop. Change your mind at most once, and say why.","PSY"],
+["Get {b} to explain their strategy out loud.","M","Somebody is collecting strategies. Yours stays in your head.","PSY"],
+["Get somebody to claim they have nothing to hide.","E","One specific phrase is worth points tonight. Nobody here should announce their innocence.","PSY"],
+["Get {a} to interrupt {b} at least twice.","M","Somebody benefits from people talking over each other. Let people finish.","PSY"],
+/* --- CHAOS --- */
+["Get {a} and {b} to accuse each other.","H","Somebody wants two people here fighting. If you are being pushed at someone, ask who is pushing.","CHA"],
+["Get accused out loud, then talk that person out of it.","H","If someone flips you from suspicious to convinced tonight, that flip was the point. Hold your suspicion.","CHA"],
+["Act obviously suspicious for a full minute and still avoid the most votes.","X","Somebody may be suspicious on purpose. Overacting is not proof — but it is not innocence either.","CHA"],
+["Get {a} to announce a change of vote during the discussion.","H","Announced vote changes are worth points to somebody. Keep your vote to yourself.","CHA"],
+["Get the room arguing about something unrelated for thirty seconds.","M","A derail tonight is deliberate. Bring it back on topic fast.","CHA"],
+["Get two other players to form an alliance in front of you.","M","Somebody gains from an open alliance forming. Keep your deals private.","CHA"],
+["Break up an alliance after it forms.","H","Somebody will try to split a pair tonight. If you make a deal, stick to it.","CHA"],
+["Get somebody to threaten to vote for you and then not do it.","M","Empty threats help somebody tonight. If you name someone, follow through.","CHA"],
+["Finish the discussion with the group agreeing on nothing.","M","A failed decision is worth points to someone. Land the decision before time.","CHA"],
+["Get the group to reverse a decision they had already settled.","H","Somebody wants a settled thing reopened. Once it's decided, it's decided.","CHA"],
+["Get two people talking over each other at the same time at least twice.","E","Somebody is farming crosstalk tonight. One voice at a time.","CHA"],
+/* --- SOCIAL ENGINEERING --- */
+["Get {a} to ask you for advice.","E","Somebody wants to be treated as the sensible one. Ask the quiet people instead.","SOC"],
+["Get {b} to reveal their plan without ever asking them for it.","M","Someone is extracting information without asking. Volunteer nothing.","SOC"],
+["Get somebody to present your idea as their own.","X","Ideas are being laundered tonight. Credit every idea to whoever actually said it first.","SOC"],
+["Get {a} to defend a proposal you made.","M","Somebody needs their proposal defended by someone else. Defend proposals, not people.","SOC"],
+["Get the group to make a decision without realising you suggested it.","H","Somebody is steering from behind. Before agreeing, say out loud whose idea it was.","SOC"],
+["Get {b} to summarise the plan using words you used first.","H","Watch the vocabulary tonight. Somebody's words are spreading around the room on purpose.","SOC"],
+["Get somebody to volunteer for the worst outcome on the table.","H","Somebody wants a volunteer for the bad option. Nobody volunteers tonight.","SOC"],
+["Ask 'what do you think we should do?' and get {a} to take over the discussion.","E","Somebody is handing over the wheel on purpose. Notice who stays quiet after starting things.","SOC"],
+["Invent a rule that isn't in the scenario and get everyone to follow it.","M","At least one rule tonight is fake. Question any rule nobody can source.","SOC"],
+["Say nothing for thirty straight seconds while {b} argues your case for you.","X","If you find yourself arguing for someone who has gone quiet, stop.","SOC"],
+/* --- HOUSE / PERSONAL (highly deniable, easy to get away with) --- */
+["Get somebody to mention Sparky without you saying the cat's name first.","E","Somebody wins if the cat comes up naturally. Don't be the one who brings up Sparky.","HOUSE"],
+["Get somebody else to bring up food or ordering in.","E","Food talk is worth points to someone tonight. Let somebody else mention it first.","HOUSE"],
+["Get somebody to offer you a cigarette, a lighter, or a hit without asking for one.","E","Somebody is waiting to be offered something. Make people ask out loud tonight.","HOUSE"],
+["Get somebody else to volunteer to clean the bong or the pipe.","M","A volunteer for the worst chore is worth points to someone. Don't volunteer tonight.","HOUSE"],
+["Get a mom joke out of somebody in this room.","E","Somebody is farming mom jokes tonight. Hold them in.","HOUSE"],
+["Get somebody to complain about placements or Haveloc without you raising it.","E","Placement talk is being harvested tonight. Don't be the first one to bring it up.","HOUSE"],
+["Get somebody to say the word 'bhai' at least three times.","E","Somebody is counting filler words tonight. Watch your own.","HOUSE"],
+["Get somebody to blame you for something and then withdraw it.","M","Somebody wants an accusation and a retraction. Don't take anything back tonight.","HOUSE"],
+["Get somebody to offer to make the run or go downstairs for the order.","M","Somebody wins if a person volunteers to go out. Make that decision by group vote only.","HOUSE"],
+["Get somebody to talk about FIFA, football, or a match.","E","Somebody is waiting for football to come up. Change the subject if it does.","HOUSE"],
+["Get somebody to say they're tired, sleepy, or need a Monster.","E","Complaining about energy levels helps somebody tonight. Say you're fine.","HOUSE"],
+["Get somebody to mention Kolkata or going home.","E","Home talk is being farmed. Keep it here.","HOUSE"],
+["Get somebody to admit they didn't go to the gym or a class this week.","M","Somebody is collecting confessions about skipped commitments. Admit nothing.","HOUSE"],
+["Get somebody to promise you a favour that carries into next round.","M","Debts across rounds are worth points to someone. Settle everything tonight.","HOUSE"],
+["Get somebody to say a number out loud before you say any number.","M","Whoever names a figure first is doing someone a favour. Let them go first.","HOUSE"],
+["Get somebody to bring up money that's owed in this flat.","E","Old debts are being raised on purpose tonight. Don't chase money in this round.","HOUSE"],
+["Get somebody to check their phone during the discussion.","E","Somebody wins if attention breaks. Phones face down.","HOUSE"],
+["Get somebody to physically hand you an object.","E","Somebody wants something passed to them. Put things down on the table instead.","HOUSE"],
+["Get somebody to repeat the scenario back to the room.","M","Somebody wants the brief re-read out loud. Let people read it themselves.","HOUSE"],
+["Get somebody to laugh at their own point mid-sentence.","M","Somebody is farming nervous laughter. Finish your sentences.","HOUSE"],
+["Get somebody to say your name three times.","M","Somebody is counting how often their name comes up. Use fewer names tonight.","HOUSE"],
+["Get somebody to describe another player's personality out loud.","M","Character readings are worth points tonight. Talk about the decision, not the people.","HOUSE"],
+["Get somebody to suggest splitting something equally.","E","An equal split helps somebody tonight. Argue for uneven.","HOUSE"],
+["Get somebody to bring up an old argument from a previous round or a previous day.","M","History is being dragged up for points. Keep it to tonight.","HOUSE"],
+["Get somebody to agree to a rule about the flat that lasts past this round.","M","Permanent rules are worth points to somebody. Make every rule expire tonight.","HOUSE"],
+["Get somebody to say something nice about the youngest person here.","M","Compliments are currency tonight. Be sparing with them.","HOUSE"],
+["Get somebody to ask you a direct question about your role.","E","Somebody wants to be asked. Direct questions tonight are a gift — ration them.","HOUSE"],
+["Get somebody to say the word 'obviously'.","E","Somebody is counting a specific filler word. Say less, mean more.","HOUSE"],
+["Get somebody to sit or move seats during the discussion.","M","Movement is being farmed. Stay where you are.","HOUSE"],
+["Get somebody to say that they're definitely not the manipulator.","E","Denials are worth points tonight. Never protest your innocence unprompted.","HOUSE"],
+["Get somebody to give you credit for a good point.","M","Credit is being harvested. Praise ideas without naming who had them.","HOUSE"],
+["Get somebody to swear at you, affectionately or otherwise.","E","Somebody wants a reaction out of you. Don't give one.","HOUSE"],
+["Get somebody to talk about their week without being asked.","M","Small talk is being farmed. Stay on the scenario.","HOUSE"],
+["Get somebody to suggest ending the discussion early.","M","Ending early helps somebody. Use the full clock.","HOUSE"],
+["Get somebody to take your side against the loudest person in the room.","M","Somebody is recruiting against the loudest voice. Judge the point, not the volume.","HOUSE"],
+["Get somebody to say 'fine' or 'whatever' as their final position.","M","Somebody wins when a person gives up. Make everyone state a real position.","HOUSE"],
+["Get somebody to make a joke at their own expense.","M","Self-deprecation is being farmed tonight. Keep your dignity.","HOUSE"],
+["Get somebody to agree with you immediately after somebody else disagreed with you.","M","Rebound agreement is worth points. Wait before backing anybody.","HOUSE"],
+/* --- AUTO-VERIFIED --- */
+["Finish the vote with zero votes against you.","M","Somebody is trying to walk out completely clean. Spread your suspicion.","AUTO","noVotes"],
+["Get {a} to vote for {b}.","H","Somebody is steering one specific vote. Decide yours alone, in silence.","AUTO","aVotesB"],
+["Get two other players to vote for the same person, and it isn't you.","H","A pile-on helps somebody tonight. Don't follow the room.","AUTO","sameWrong"],
+["Get exactly one vote against you — no more, no fewer.","X","Somebody is managing exactly how suspicious they look. One vote is not innocence.","AUTO","exactlyOne"],
+["Get at least one vote from somebody, without being the most-voted player.","H","Somebody wants to be doubted but not caught. Commit to your suspicion fully.","AUTO","someNotMost"]
+];
+
+/* mission generator */
+const GENP = {
+ tg:["{a}","{b}","two other players"],
+ ac:[["say out loud that they trust you",1],["publicly agree with something you said",1],["defend you when you're challenged",2],
+  ["change a stated opinion",2],["accuse somebody other than you",2],["ask you what they should do",2],
+  ["repeat a phrase you invented",2],["admit they were wrong about something",3],["propose the outcome you secretly want",3],
+  ["give up something they wanted",3],["say your name in a compliment",2],["bring up food, Sparky, or football",1]],
+ cd:[["without them realising you steered it",2],["before the clock runs out",0],["without ever saying their name",2],
+  ["in the middle of a disagreement",1],["while you're pretending to disagree with them",2],["without asking for it directly",2],
+  ["in the first two minutes",1],["right after somebody accuses you",3],["without you raising the subject first",2]],
+ ctr:["Somebody is steering a specific person tonight. Notice who keeps ending up in the middle.",
+  "One thing that happens tonight will happen because somebody engineered it. Ask why, not who.",
+  "Somebody has a target in this room. If a conversation keeps returning to one person, that's the tell."],
+ make(){
+  for(let i=0;i<50;i++){
+   const t=pick(this.tg),a=pick(this.ac),c=pick(this.cd);
+   if(t==="two other players"&&/your name|ask you/.test(a[0])) continue;
+   const s=a[1]+c[1], d=s<=2?"E":s<=3?"M":s<=5?"H":"X";
+   const v=t==="two other players"?"Get two other players to ":"Get "+t+" to ";
+   return {t:v+a[0]+" "+c[0]+".",d,ctr:pick(this.ctr),c:"GEN"};
+  }
+  return {t:"Get {a} to publicly agree with something you said.",d:"M",ctr:pick(this.ctr),c:"GEN"};
+ }
+};
+
+/* ============================================================
+   CIVILIAN MINI-TASKS  [text, difficulty]
+   Small, deniable, and mostly harmless — they exist so that
+   everybody is doing something weird, not just the manipulator.
+   ============================================================ */
+const TASKS = [
+["Say the word 'bhai' at least four times.","E"],["Mention Sparky once, casually.","E"],
+["Bring up food or ordering in at some point.","E"],["Compliment somebody's point without agreeing with it.","E"],
+["Say 'to be fair' at least twice.","E"],["Ask one person a question about their week.","E"],
+["Use the word 'obviously' exactly once.","E"],["Mention Kolkata.","E"],
+["Sigh audibly at least twice.","E"],["Say somebody's name three times.","E"],
+["Make one football reference, correct or not.","E"],["Mention the gym.","E"],
+["Bring up Haveloc or placements once.","E"],["Say 'I'm not saying anything' at least once.","E"],
+["Agree with the quietest person in the room at least once.","E"],["Ask somebody to repeat themselves.","E"],
+["Mention a Monster, chai, or coffee.","E"],["Say 'listen' at the start of a sentence twice.","E"],
+["Make one mom joke.","E"],["Reference an old argument from this flat.","E"],
+["Say 'that's fair' without meaning it.","E"],["Ask what time it is.","E"],
+["Mention the wifi.","E"],["Say something nice about the youngest person here.","E"],
+["Yawn on purpose, convincingly.","E"],["Use the word 'technically' once.","E"],
+["Mention money that's owed in this flat.","E"],["Ask somebody if they're okay.","E"],
+["Say 'I'll do it' about something, then do not do it.","M"],["Get somebody to laugh at least twice.","M"],
+["Change your stated opinion once, and say why.","M"],["Make one proposal nobody accepts.","M"],
+["Stay completely silent for thirty straight seconds.","M"],["Ask the same person two questions in a row.","M"],
+["Defend somebody who is being accused.","M"],["Accuse somebody, then say you might be wrong.","M"],
+["Get somebody to agree with you twice.","M"],["Repeat a phrase somebody else used, on purpose.","M"],
+["Take a firm position and never move from it.","M"],["Speak immediately after a specific person, three times.","M"],
+["Summarise the state of the discussion out loud once.","M"],["Ask somebody to explain their reasoning.","M"],
+["Say something true about yourself that nobody here knew.","M"],["Offer somebody a deal, any deal.","M"],
+["Point out a contradiction, real or imagined.","M"],["Make the group vote on something small.","M"],
+["Get somebody to say 'no' to you.","M"],["Bring the conversation back on topic after a derail.","M"],
+["Count how many times somebody says a filler word, then mention the number.","M"],["Volunteer for something nobody wants.","M"],
+["Ask one person directly whether they're the manipulator.","E"],["Never say the word 'manipulator' the whole round.","M"],
+["Mention the bong, the pipe, or a lighter once.","E"],["Complain about something in this flat that is genuinely annoying.","E"],
+["Say 'we should make a rule about this'.","E"],["Get somebody to say your name back to you.","M"],
+["Refuse the first thing anybody proposes.","M"],["Support the first thing anybody proposes.","E"],
+["Say 'that's exactly what a manipulator would say' at least once.","E"],["Make a prediction about how the vote will go.","M"],
+["Sit through one full minute without proposing anything.","M"],["Ask somebody what they'd do if they were you.","M"],
+["Give somebody a compliment you don't mean.","M"],["Bring up an exam, deadline, or class.","E"],
+["Say 'chill' or 'relax' to somebody.","E"],["Get two people to talk to each other instead of to you.","M"]
+];
+
+/* decoy intel — so having intel is never a tell */
+const DECOY = [
+"Nothing specific tonight. Watch the pauses.",
+"Somebody in this room is being unusually agreeable. That's all we know.",
+"No intel. If you're going to guess, guess late.",
+"The most useful thing tonight is who speaks second, not first.",
+"Somebody here has a task that is embarrassing rather than dangerous.",
+"No intel. Assume at least one weird thing tonight is completely innocent.",
+"Watch who gets defended before they ask for it.",
+"Somebody will change their mind tonight for an honest reason. Don't over-read it.",
+"No intel. The quiet ones are not automatically guilty.",
+"Somebody here is doing something odd because they were told to. It may mean nothing.",
+"Track who first says a name out loud tonight.",
+"No intel. But whoever ends up with the most out of this scenario is worth a look.",
+"Somebody is going to say something suspicious by accident. Let it pass.",
+"Nothing tonight. Watch hands, not faces.",
+"Somebody here would rather lose the argument than be noticed winning it.",
+"No intel. Count how many times each person speaks and compare at the end.",
+"Somebody in this room is telling the complete truth and it's making them look worse.",
+"No intel. Beware anyone who is too keen to move to the vote.",
+"Somebody has a mini task involving a specific word. Everybody does. Relax.",
+"Nothing useful. Trust your first read and stop revising it."
+];
+
+/* ============================================================
+   CHAOS CARDS
+   ============================================================ */
+const CHAOS = [
+["DOUBLE TROUBLE","For the next 60 seconds, everybody must defend whatever the person on their left says."],
+["NO TRUST","On three, everybody says the name of the person they currently trust most. Out loud, at the same time."],
+["MIRROR","For two minutes, each person argues somebody else's position instead of their own."],
+["SILENCE","The group picks one person right now. They cannot speak for 60 seconds."],
+["CONFESSION","Everybody states one true thing about what they're doing this round. One thing. Not the whole thing."],
+["REVERSAL","Whoever the room currently trusts most is now the main suspect for two minutes and must defend themselves."],
+["ONE QUESTION","Each player may ask exactly one person exactly one question. The target must answer honestly."],
+["PUBLIC ENEMY","Everybody points at once at who they trust least. Anyone with two or more fingers speaks first from now on."],
+["THE ECHO","Before making a new point you must accurately repeat the last point somebody else made."],
+["NO NAMES","No names for 90 seconds. Point, gesture, describe."],
+["HARD CURRENCY","Every claim needs a reason attached. 'Because I said so' does not count."],
+["OPEN BOOKS","Everybody states one thing they want out of this round. It does not have to be true."],
+["FREEZE","Twenty seconds of total silence. Whoever speaks first afterwards must make a proposal."],
+["THE PACT","Two players may make one public promise to each other. Breaking it later is completely legal."],
+["INTERROGATION","Pick one person. Everybody else gets 30 seconds of questions at them."],
+["SWAP SEATS","Everybody physically moves one seat clockwise and argues from there."],
+["THE VETO","The group picks one person who may cancel one sentence said tonight. It never happened."],
+["LOUD THOUGHTS","For 60 seconds, say what you're thinking before you say what you mean."],
+["THE THIRD OPTION","Somebody must propose an option nobody has considered. The room must debate it seriously."],
+["NO QUESTIONS","No questions for 90 seconds. Statements only."],
+["THE WITNESS","One person is the Witness. They may not propose anything, only comment on what others propose."],
+["SIGN LANGUAGE","Two minutes of silent negotiation only. Writing, gestures, faces. No speech."],
+["BONG BREAK","Pause the argument. Whoever is holding the worst position right now has to clean the pipe later. Decide who that is, then continue."],
+["THE ORDER STANDS","Nothing decided in the next 90 seconds can be reversed later. Choose carefully."],
+["SPARKY'S VOTE","Sparky gets one vote tonight. The room must agree what Sparky wanted and honour it."],
+["MOM JOKE AMNESTY","For 60 seconds, all mom jokes are legal and cannot be held against anybody. After that, they can."],
+["THE YOUNGEST SPEAKS LAST","For the rest of the round, the youngest person in the room only speaks after everybody else has."],
+["FIFA RULES","Any disagreement can be settled by one person naming a football fact. If nobody can disprove it, it stands."],
+["PHONE DOWN","All phones face down on the table until the vote. Anyone who picks one up owes the room a favour."],
+["THE MONSTER TAX","Whoever talks the most this round buys the next round of drinks. Somebody keep count."]
+];
+
+/* random events */
+const EVENTS = [
+["double","🧨 DOUBLE AGENDA","The Manipulator is carrying TWO missions this round. Both count."],
+["justify","🧠 HARD MODE","Everybody must justify their vote out loud in exactly one sentence before locking it."],
+["alliance","🤝 ALLIANCE ROUND","One player may privately offer another player a deal before the discussion starts."],
+["blind","🕶️ BLIND ROUND","Nobody may say the word 'manipulator' this round. Describe it another way."],
+["short","⏱️ PRESSURE","The discussion clock is cut in half this round."],
+["open","📣 OPEN ACCUSATION","Before the discussion, everybody must name one suspicion out loud. Then argue."],
+["notasks","🎯 CLEAN ROUND","No mini tasks for anybody this round. Only the agenda is in play."],
+["reveal","🔦 LEAK","One random innocent gets real counter-intel this round instead of a decoy."],
+["double","🧨 DOUBLE AGENDA","The Manipulator is carrying TWO missions this round. Both count."],
+["silentvote","🤐 SEALED ROOM","No talking at all for the last 60 seconds before the vote."]
+];
+/* ============================================================
+   MAFIAOG CONTENT
+   ============================================================ */
+const MROLES = {
+ civ:  {n:"CIVILIAN", e:"🙂", c:"var(--blue)",  d:"No powers. No information. Just a mouth and a vote.", team:"town"},
+ imp:  {n:"IMPOSTER", e:"🔪", c:"var(--red2)", d:"You kill one person every night. Survive the day.", team:"mafia"},
+ cop:  {n:"COP",      e:"🔍", c:"var(--gold)", d:"Each night you investigate one person and learn if they're an Imposter.", team:"town"},
+ doc:  {n:"MEDIC",    e:"🩹", c:"var(--green)",d:"Each night you protect one person. If they were targeted, they live.", team:"town"},
+ jest: {n:"JESTER",   e:"🤡", c:"var(--violet)",d:"You win — alone — if the town votes YOU out. Get yourself hanged.", team:"solo"}
+};
+const MDEATH = [
+ "was found in the stairwell. The lighter was still warm.",
+ "did not wake up. The bong on the table was still full.",
+ "was found in the kitchen. Sparky was sitting on their chest, unbothered.",
+ "is gone. Their Monster is still cold in the fridge.",
+ "was taken in the night. The controller was left mid-match.",
+ "won't be at the 8am. Permanently.",
+ "was found on the balcony. Nobody heard anything.",
+ "is out. Their Haveloc login will go unused.",
+ "did not survive the night. The order they placed arrived anyway.",
+ "was found in the corridor. Nothing was taken except them.",
+ "is gone. Their side of the room is exactly as they left it.",
+ "was found by the lift. The neighbours have already started asking."
+];
+const MSAVED = [
+ "Somebody was attacked in the night and somebody else got there first. Nobody died.",
+ "There was an attempt. It failed. Whoever did it is not happy.",
+ "A quiet night — quieter than it should have been. Everyone is still here."
+];
+
+/* ============================================================
+   TITLES / ROASTS
+   ============================================================ */
+const TITLES = [
+["🏆","MASTER MANIPULATOR","Completed the most agendas.",p=>p.st.done,1],
+["🧠","HUMAN LIE DETECTOR","Named the manipulator more than anyone.",p=>p.st.correct,2],
+["🎭","PROFESSIONAL ACTOR","Ran an agenda and walked out clean.",p=>p.st.clean,1],
+["💀","CHAOS GOBLIN","Left the most wreckage behind.",p=>p.st.chaos,2],
+["🤝","TOO TRUSTING","Backed the wrong person, repeatedly.",p=>p.st.wrong,3],
+["🔪","BETRAYAL MERCHANT","Turned on people who were counting on them.",p=>p.st.betray,1],
+["🕵️","CERTIFIED PARANOID","Suspected everyone. Occasionally right.",p=>p.st.wrong+p.st.correct,4],
+["🗿","GAVE NOTHING AWAY","Barely got looked at all night.",p=>p.st.rounds-p.st.votesGot,2],
+["🎯","PRIME SUSPECT","Innocent and constantly accused.",p=>p.st.suspInn,3],
+["✅","TASK GOBLIN","Quietly completed the most mini tasks.",p=>p.st.tasks,3],
+["🪞","THE QUIET WINNER","Scored without ever being the loudest.",p=>p.score-p.st.manip*3,1],
+["📐","THE ARCHITECT","Completed missions on the hardest settings.",p=>p.st.hard,1],
+["🐈","SPARKY'S CHOICE","Somehow came out of all this fine.",p=>p.score,1],
+["🚬","LIGHTER THIEF","Took more than they gave, all night.",p=>p.st.misdir,2]
+];
+const ROAST = {
+ caught:["Bro, you are NOT built for espionage.","Same tell every round. They were being polite about it.","You get caught the way you lose at FIFA — confidently.","Genuinely, just tell the truth next time. It's faster."],
+ clean:["We regret giving you free will.","Nobody in this flat should trust you with a key.","You didn't win this. You farmed it.","Whatever you're doing after college, it should be illegal."],
+ gullible:["At this point just sign whatever they put in front of you.","You'd lend money to a person actively on fire.","Someone explain object permanence to this one.","You are the reason scams work."],
+ sniper:["Nobody is safe around you.","You read this room like a delivery receipt.","Genuinely unsettling accuracy.","You should not be allowed at parties."],
+ quiet:["Said about nine words. Finished top three.","The silence was doing more work than the arguing.","Never spoke. Never lost. Suspicious.","Strategic muteness. Respect."],
+ tasks:["Did every little job. Won nothing. Beautiful.","The most employable person in this room.","Quietly the most productive. Still lost.","Task completion: elite. Social awareness: developing."],
+ mid:["Perfectly balanced. Perfectly forgettable.","Did everything half right, consistently.","A genuinely neutral participant in a game about not being one.","Present. Accounted for. Unremarkable."]
+};
+const DIFF = {E:["EASY","🟢",1,0],M:["MEDIUM","🟡",2,0],H:["HARD","🔴",3,2],X:["INSANE","🟣",5,4]};
+
+/* ============================================================
+   CORE
+   ============================================================ */
+const mem={};
+const store={
+ get(k,d){try{const v=localStorage.getItem(k);return v===null?(k in mem?mem[k]:d):JSON.parse(v);}catch(e){return (k in mem)?mem[k]:d;}},
+ set(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}mem[k]=v;},
+ del(k){try{localStorage.removeItem(k);}catch(e){}delete mem[k];}
+};
+const $=s=>document.querySelector(s);
+const app=()=>document.getElementById("app");
+const rnd=n=>Math.floor(Math.random()*n);
+const pick=a=>a[rnd(a.length)];
+const shuffle=a=>{const b=a.slice();for(let i=b.length-1;i>0;i--){const j=rnd(i+1);[b[i],b[j]]=[b[j],b[i]];}return b;};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const mmss=s=>Math.floor(s/60)+":"+String(Math.max(0,s%60)).padStart(2,"0");
+const PC=["#ff4d6d","#5fb3f5","#31d17f","#f0c96b","#a97bff","#ff9f4d","#4de0d0","#ff7ad1","#9ecf3a","#8f9bff"];
+
+let AC=null;
+const SFX={
+ on(){return store.get("snd",true);},
+ c(){if(AC===null){try{AC=new (window.AudioContext||window.webkitAudioContext)();}catch(e){AC=false;}}return AC;},
+ b(f,d,t,v,s){if(!this.on())return;const c=this.c();if(!c)return;if(c.state==="suspended")c.resume();
+  const o=c.createOscillator(),g=c.createGain();o.type=t||"sine";o.frequency.setValueAtTime(f,c.currentTime);
+  if(s)o.frequency.exponentialRampToValueAtTime(s,c.currentTime+d);
+  g.gain.setValueAtTime(.0001,c.currentTime);g.gain.exponentialRampToValueAtTime(v||.1,c.currentTime+.012);
+  g.gain.exponentialRampToValueAtTime(.0001,c.currentTime+d);o.connect(g);g.connect(c.destination);o.start();o.stop(c.currentTime+d+.03);},
+ tap(){this.b(430,.055,"triangle",.045);},
+ flip(){this.b(680,.1,"triangle",.06,1250);},
+ lock(){this.b(190,.16,"square",.055,88);},
+ tick(){this.b(1500,.028,"square",.028);},
+ alert(){this.b(250,.35,"sawtooth",.065,115);},
+ rev(){this.b(85,.65,"sawtooth",.09,340);setTimeout(()=>this.b(620,.34,"triangle",.06,250),170);},
+ win(){[523,659,784,1047].forEach((f,i)=>setTimeout(()=>this.b(f,.22,"triangle",.075),i*95));},
+ fail(){[330,247,175].forEach((f,i)=>setTimeout(()=>this.b(f,.25,"sawtooth",.065),i*115));},
+ night(){this.b(140,.9,"sine",.06,70);}
+};
+
+let TIMER=null;
+function render(html,bind){
+ clearInterval(TIMER);
+ window.__atHome=false;
+ app().innerHTML=html;
+ document.querySelectorAll("[data-go]").forEach(b=>b.addEventListener("click",()=>{SFX.tap();go(b.dataset.go);}));
+ if(bind)bind();
+ window.scrollTo(0,0);
+}
+function wipeTo(fn){
+ const w=document.getElementById("wipe");w.className="";void w.offsetWidth;w.className="go";
+ setTimeout(fn,215);setTimeout(()=>{w.className="";},740);
+}
+function toast(msg){
+ const t=document.getElementById("toast");t.textContent=msg;t.style.display="block";
+ clearTimeout(t._h);t._h=setTimeout(()=>{t.style.display="none";},1900);
+}
+function head(crumb,right){
+ return `<div class="top"><div class="crumb">${crumb||""}</div><div style="display:flex;gap:8px">${right||""}</div></div>`;
+}
+function sndBtn(){return `<button class="icb" id="sb">${SFX.on()?"🔊":"🔇"}</button>`;}
+function bindSnd(){const b=$("#sb");if(b)b.onclick=()=>{store.set("snd",!SFX.on());SFX.tap();b.textContent=SFX.on()?"🔊":"🔇";};}
+function rail(n,total){
+ let h='<div class="rail">';for(let i=0;i<total;i++)h+=`<i class="${i<n-1?"on":i===n-1?"now":""}"></i>`;return h+"</div>";
+}
+function avatar(i,name,size){
+ const c=PC[i%PC.length];
+ return `<div class="avatar" style="background:linear-gradient(160deg,${c},${c}99);${size?`width:${size}px;height:${size}px;font-size:${size*.4}px;border-radius:${size*.34}px;`:""}">${esc(name[0]||"?").toUpperCase()}</div>`;
+}
+const FP=`<svg class="fp" viewBox="0 0 100 100" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round">
+ <path d="M50 8c-14 0-25 11-25 25v14"/><path d="M50 18c-9 0-15 7-15 15v22"/><path d="M50 28c-4 0-6 3-6 6v30"/>
+ <path d="M56 34v34"/><path d="M65 33c0-8-7-15-15-15"/><path d="M75 40c0-14-11-25-25-25"/>
+ <path d="M28 60c0 12 3 20 7 26"/><path d="M38 66c0 10 2 16 5 21"/><path d="M66 58c0 12-2 21-5 28"/>
+ <path d="M75 55c0 14-3 24-7 32"/></svg>`;
+function caseNo(){return "case \u2116 "+(1000+rnd(9000))+"-KTR / "+["A","B","C","D","E","F","G","H"][rnd(8)]+rnd(10)+rnd(10);}
+function chip(i,name,out){
+ return `<span class="chip ${out?"out":""}"><span class="dot" style="background:${PC[i%PC.length]}"></span>${esc(name)}</span>`;
+}
+
+/* ---------- state ---------- */
+let G=null,M=null;
+const TMODES={
+ classic:["CLASSIC","One agenda in the room. Everything else is normal.",.25,.15,0],
+ chaos:["CHAOS","More chaos cards, more events, meaner missions.",.7,.5,0],
+ speed:["SPEED","60–120 second rounds. No time to think, only to talk.",.3,.2,0],
+ double:["DOUBLE AGENT","An extra agenda. The manipulators don't know each other.",.3,.25,8],
+ psycho:["PSYCHO","Hard and Insane missions only. No easy points.",.35,.3,8]
+};
+const LENS=[[5,"QUICK","5 rounds"],[8,"STANDARD","8 rounds · recommended"],[12,"LONG","12 rounds"],[0,"INFINITE","until somebody quits"]];
+
+function blankSt(){return {rounds:0,manip:0,inn:0,done:0,hard:0,clean:0,correct:0,wrong:0,votesGot:0,suspInn:0,tasks:0,chaos:0,betray:0,misdir:0,pers:0};}
+function newG(names,mode,rounds){
+ G={players:names.map((n,i)=>({name:n,i,score:0,st:blankSt()})),mode,total:rounds,round:0,
+    manips:[],mis:{},tasks:{},intel:{},realIntel:[],scen:null,twist:null,chaos:null,ev:null,
+    votes:{},order:[],idx:0,pend:[],hist:[],uM:[],uS:[],uT:[],mCount:names.map(()=>0),last:[],rev:null,res:null};
+}
+const N=()=>G.players.length;
+
+/* ---------- home ---------- */
+const S={};
+S.home=()=>{
+ const r=store.get("rounds",0);
+ render(`<div style="padding-top:20px">
+ <div class="anim"><div class="case">${caseNo()} · classification: domestic</div></div>
+ <h1 class="tXL anim d1" style="margin:12px 0 0">Trust<br>No<br><span class="red">One</span></h1>
+ <div class="grade anim d1"></div>
+ <p class="lede anim d2" style="margin:6px 0 24px;max-width:30ch">Order in. Argue. Point at somebody. Nobody in this flat is clean.</p>
+ <div class="stack anim d3">
+  <button class="btn p" data-go="setup">Start Trust No One</button>
+  <button class="btn" data-go="msetup">MAFIAOG — roles, night, no tasks</button>
+  <button class="btn" data-go="solo">Solo dossier (1–2 people)</button>
+ </div>
+ <div class="rule"></div>
+ <div class="row anim d4">
+  <button class="btn s gh" data-go="howto">How to play</button>
+  <button class="btn s gh" data-go="modes">Modes</button>
+ </div>
+ <div class="gap"></div>
+ <div class="row anim d4">
+  <button class="btn s gh" data-go="stats">Stats</button>
+  <button class="btn s gh" data-go="settings">Settings</button>
+ </div>
+ <div class="rule"></div>
+ <div class="xs ctr">${(window.__atHome=true)?"":""}${r} rounds played in this flat · ${SCEN.length} scenarios · ${MIS.length + TASKS.length} written jobs</div>
+ </div>`);
+};
+
+S.howto=()=>{
+ render(`${head("HOW TO PLAY",`<button class="icb" data-go="home">Back</button>`)}
+ <div class="anim"><h2 class="tL">The whole game<br>in six lines</h2>
+ <div class="stack" style="margin-top:18px">
+  <div class="card t"><div class="kick">1 · the deal</div><p class="sm" style="margin:8px 0 0">Everybody gets a card. One or two of you get a secret <b class="red">agenda</b>. Everyone else gets a harmless <b>mini task</b>, so nobody is the only person acting weird.</p></div>
+  <div class="card t"><div class="kick">2 · the intel</div><p class="sm" style="margin:8px 0 0">Some innocents get real counter-intel that would block the agenda if they act on it. Everyone else gets a convincing decoy. You will not know which you have.</p></div>
+  <div class="card t"><div class="kick">3 · the brief</div><p class="sm" style="margin:8px 0 0">The scenario is printed on everybody's secret card, so every player takes the same time reading. No timing tells.</p></div>
+  <div class="card t"><div class="kick">4 · the argument</div><p class="sm" style="margin:8px 0 0">Talk. Negotiate. Lie or don't. The best manipulators mostly tell the truth.</p></div>
+  <div class="card t"><div class="kick">5 · the vote</div><p class="sm" style="margin:8px 0 0">Everybody votes in secret. Whoever gets the most votes is <b>accused</b>. A manipulator is only caught if they're top of that pile. A tie catches nobody.</p></div>
+  <div class="card t"><div class="kick">6 · the points</div><p class="sm" style="margin:8px 0 0">Agenda done + not caught is the big score. Surviving with a failed mission is worth almost nothing. Innocents score for the right name and for finishing their own little job.</p></div>
+  <div class="card hot"><div class="kick red">the golden rule</div><p class="sm" style="margin:8px 0 0">Never show your card. If you see somebody else's, say so out loud and redeal. The app can't stop you cheating. Your roommates can.</p></div>
+ </div>
+ <div class="gap lg"></div><button class="btn p" data-go="setup">Start a game</button></div>`);
+};
+
+S.modes=()=>{
+ const r=store.get("rounds",0),u=store.get("unlock",false);
+ render(`${head("GAME MODES",`<button class="icb" data-go="home">Back</button>`)}
+ <div class="anim"><h2 class="tL">Modes</h2>
+ <div class="stack" style="margin-top:16px">
+ ${Object.entries(TMODES).map(([k,m])=>{const l=m[4]>r&&!u;
+  return `<div class="card ${l?"":"t"}" style="${l?"opacity:.5":""}"><div class="sp"><h3 class="tM">${m[0]}</h3>
+  ${l?`<span class="pill">🔒 ${m[4]} rounds</span>`:`<span class="pill on">ready</span>`}</div>
+  <p class="sm" style="margin:10px 0 0">${m[1]}</p></div>`;}).join("")}
+ <div class="card vi"><div class="sp"><h3 class="tM vio">MAFIAOG</h3><span class="pill on">4–10 players</span></div>
+ <p class="sm" style="margin:10px 0 0">The classic one. Imposters, Cop, Medic, Jester. Night phase, day phase, elimination. No tasks, no scenarios — just accusations until one side wins.</p></div>
+ </div><div class="gap lg"></div>
+ <div class="row"><button class="btn s p" data-go="setup">Trust No One</button><button class="btn s" data-go="msetup">MAFIAOG</button></div></div>`);
+};
+
+S.settings=()=>{
+ render(`${head("SETTINGS",`<button class="icb" data-go="home">Back</button>`)}
+ <div class="anim"><h2 class="tL">Settings</h2>
+ <div class="stack" style="margin-top:16px">
+  <button class="btn" id="a"><div class="l"><span>Sound</span><span class="sw ${SFX.on()?"on":""}"><i></i></span></div></button>
+  <button class="btn" id="b"><div class="l"><span>Reduced motion</span><span class="sw ${store.get("noanim",false)?"on":""}"><i></i></span></div></button>
+  <button class="btn" id="c"><div class="l"><span>Unlock all modes</span><span class="sw ${store.get("unlock",false)?"on":""}"><i></i></span></div></button>
+  <button class="btn gh" id="d">Replay the tutorial</button>
+  <button class="btn gh" id="e" style="color:#ff6b86">Erase saved preferences</button>
+ </div>
+ <p class="sm" style="margin-top:16px">Only preferences, saved names and tutorial progress live on this phone. Roles, missions, intel and votes are never written to storage.</p></div>`,()=>{
+  $("#a").onclick=()=>{store.set("snd",!SFX.on());SFX.tap();S.settings();};
+  $("#b").onclick=()=>{const v=!store.get("noanim",false);store.set("noanim",v);document.body.classList.toggle("noanim",v);S.settings();};
+  $("#c").onclick=()=>{store.set("unlock",!store.get("unlock",false));S.settings();};
+  $("#d").onclick=()=>{store.set("tut",false);S.tut(0);};
+  $("#e").onclick=()=>{["snd","tut","unlock","noanim","rounds","life","names"].forEach(store.del);toast("Wiped.");S.settings();};
+ });
+};
+
+S.stats=()=>{
+ const L=store.get("life",null);
+ render(`${head("STATS",`<button class="icb" data-go="home">Back</button>`)}
+ <div class="anim"><h2 class="tL">Flat record</h2>
+ ${L?`<div class="card t" style="margin-top:16px"><div class="kick">last finished game · ${esc(L.mode||"")}</div>
+  <table style="margin-top:10px">${L.rows.map((r,k)=>`<tr><td>${["🥇","🥈","🥉"][k]||"·"} ${esc(r.n)}</td><td class="n">${r.s}</td></tr>`).join("")}</table>
+  <div class="rule"></div><div class="sm">Rounds on this phone: <b>${store.get("rounds",0)}</b></div>
+  <div class="sm">Agendas completed: <b>${L.done}</b> · Manipulators caught: <b>${L.caught}</b> · Mini tasks done: <b>${L.tasks}</b></div></div>`
+ :`<div class="card" style="margin-top:16px"><p class="sm" style="margin:0">Nothing yet. Finish a game and it lands here.</p></div>`}
+ <p class="sm" style="margin-top:14px">Game stats, not a personality diagnosis. Nobody here is actually a chaos goblin. Probably Mano.</p>
+ <div class="gap"></div><button class="btn p" data-go="setup">Start a game</button></div>`);
+};
+
+/* ---------- tutorial ---------- */
+const TUT=[
+["01 · the idea","Somebody has an agenda.",`<p>Every round, one or two people secretly get a <b class="red">mission</b> — something to make the rest of you do without noticing.</p><p>Everyone else gets a small, harmless task. That's on purpose. If only the manipulator was acting strange, this game would last four seconds.</p>`],
+["02 · your card","Everyone's card looks the same.",`<div class="dossier"><span class="stamp">EYES ONLY</span><div class="kick">tonight's scenario</div><p class="sm" style="margin:8px 0 14px">₹640 in the pool, one order, everybody hungry.</p><div class="kick">your role</div><h3 class="tM red" style="margin:6px 0 8px">🔴 Manipulator</h3><p class="sm" style="margin:0 0 12px">Get somebody to offer you a cigarette without asking for one.</p><div class="kick blue">intel</div><p class="sm" style="margin:6px 0 0">Watch who gets defended before they ask for it.</p></div><p class="sm" style="margin-top:14px">Same layout for everyone — same reading time, no tells.</p>`],
+["03 · the counter","Some of you can block it.",`<p>A couple of innocents get <b class="blue">real counter-intel</b> — a hint that, if you act on it, kills the agenda dead.</p><p>Everybody else gets a decoy that reads exactly the same. You will never be sure which one you're holding.</p>`],
+["04 · the vote","Then you point fingers.",`<p>Everybody votes in secret. Most votes = accused. A manipulator is only <b>caught</b> if they top the pile. A tie means nobody goes down.</p><p>Getting away with it isn't enough on its own — a failed mission is worth almost nothing.</p>`],
+["05 · the only rule","There are no good or bad lies.",`<p>Lie. Tell the truth. Promise anything and break it a minute later. All legal.</p><p>Honestly? The manipulators who tell the truth all round are the hardest to catch.</p>`],
+["06 · the phone","Don't show your screen.",`<p>The phone goes around. Every secret screen says whose it is at the top.</p><p>If you see somebody else's card by accident, say so and redeal. Simple.</p>`]
+];
+S.tut=(i)=>{const n=typeof i==="number"?i:0,t=TUT[n],last=n===TUT.length-1;
+ render(`${head("TUTORIAL",`<button class="icb" id="sk">Skip</button>`)}${rail(n+1,TUT.length)}
+ <div class="anim"><div class="kick">${t[0]}</div><h2 class="tL" style="margin:12px 0 18px">${t[1]}</h2>${t[2]}
+ <div class="gap lg"></div><button class="btn p" id="n">${last?"I'm ready":"Next"}</button></div>`,()=>{
+  $("#sk").onclick=()=>{store.set("tut",true);S.setup();};
+  $("#n").onclick=()=>{SFX.flip();if(last){store.set("tut",true);S.setup();}else S.tut(n+1);};
+ });
+};
+
+function lineup(n,mode){
+ let k=n<=5?1:2;
+ if(mode==="double")k++;
+ if(mode==="chaos"&&n>=9)k++;
+ k=clamp(k,1,Math.max(1,n-2));
+ const civ=n-k, intel=clamp(n<=5?1:2,1,civ);
+ return {k,civ,intel};
+}
+function estimate(n,mode,rounds){
+ const base=mode==="speed"?95:270+clamp((n-4)*25,0,150);
+ const per=base + n*34 + n*19 + 110;
+ const r=rounds||8;
+ return {per:Math.round(per/60),total:Math.round(per*r/60)};
+}
+
+/* ---------- setup ---------- */
+let D={names:store.get("names",["Raja","Mourjya","Yuvan","Mano"]),mode:"classic",len:8};
+S.setup=()=>{
+ if(!store.get("tut",false))return S.tut(0);
+ const r=store.get("rounds",0),u=store.get("unlock",false);
+ render(`${head("TRUST NO ONE · SETUP",`<button class="icb" data-go="home">Back</button>`)}
+ <div class="anim"><h2 class="tL">Who's in the flat?</h2>
+ <p class="sm" style="margin:10px 0 16px">Between 3 and 10 people. Emojis are encouraged.</p>
+ <div class="stack tight" id="pl">
+ ${D.names.map((n,i)=>`<div class="pRow"><span class="dot" style="background:${PC[i%PC.length]}"></span>
+  <input type="text" id="p${i}" maxlength="16" placeholder="Player ${i+1}" value="${esc(n)}" autocomplete="off">
+  ${D.names.length>3?`<button class="del" data-del="${i}">✕</button>`:""}</div>`).join("")}
+ </div>
+ <div class="gap"></div>
+ <div class="row">
+  <button class="btn s gh" id="add" ${D.names.length>=10?"disabled":""}>+ Add player</button>
+  <button class="btn s gh" id="shuf">Shuffle seats</button>
+ </div>
+ <div class="rule"></div><div class="kick">mode</div>
+ <div class="stack tight" style="margin-top:10px">
+ ${Object.entries(TMODES).map(([k,m])=>{const l=m[4]>r&&!u;
+  return `<button class="btn s ${D.mode===k?"sel":""}" data-m="${k}" ${l?"disabled":""}><div class="l"><span>${m[0]}${l?" 🔒":""}</span><span class="r">${l?"at "+m[4]+" rounds":m[1]}</span></div></button>`;}).join("")}
+ </div>
+ <div class="rule"></div><div class="kick">length</div>
+ <div class="stack tight" style="margin-top:10px">
+ ${LENS.map(l=>`<button class="btn s ${D.len===l[0]?"sel":""}" data-l="${l[0]}"><div class="l"><span>${l[1]}</span><span class="r">${l[2]}</span></div></button>`).join("")}
+ </div>
+ <div class="rule"></div>
+ ${(()=>{const n=D.names.filter(x=>x.trim()).length;if(n<3)return "";
+   const L=lineup(n,D.mode),E=estimate(n,D.mode,D.len||8);
+   return `<div class="card t"><div class="kick">tonight's table</div>
+   <div class="wrap" style="margin-top:10px">
+    <span class="pill rd">\ud83d\udd34 ${L.k} agenda${L.k>1?"s":""}</span>
+    <span class="pill">\ud83d\udd35 ${L.civ} innocents</span>
+    <span class="pill on">\ud83d\udd0e ${L.intel} hold real counter-intel</span></div>
+   <div class="xs" style="margin-top:10px">\u2248 ${E.per} min a round \u00b7 ${D.len?"about "+E.total+" min for the whole game":"as long as you like"}${n>=7&&D.len>8?" \u00b7 5 rounds is plenty at this size":""}</div></div>`;})()}
+ <div class="gap"></div><div id="er" class="sm red" style="min-height:20px"></div>
+ <button class="btn p" id="go">Deal round 1</button></div>`,()=>{
+  const save=()=>{D.names=D.names.map((_,i)=>$("#p"+i).value);};
+  document.querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>{save();D.names.splice(+b.dataset.del,1);SFX.tap();S.setup();});
+  $("#add").onclick=()=>{save();D.names.push("");SFX.tap();S.setup();};
+  $("#shuf").onclick=()=>{save();D.names=shuffle(D.names);SFX.flip();S.setup();};
+  document.querySelectorAll("[data-m]").forEach(b=>b.onclick=()=>{save();D.mode=b.dataset.m;SFX.tap();S.setup();});
+  document.querySelectorAll("[data-l]").forEach(b=>b.onclick=()=>{save();D.len=+b.dataset.l;SFX.tap();S.setup();});
+  $("#go").onclick=()=>{
+   save();
+   let ns=D.names.map(s=>s.trim()).filter(Boolean);
+   if(ns.length<3){$("#er").textContent="You need at least 3 named players. Pull somebody off the console.";SFX.fail();return;}
+   const seen={};ns=ns.map(n=>{const k=n.toLowerCase();seen[k]=(seen[k]||0)+1;return seen[k]>1?n+" ("+seen[k]+")":n;});
+   store.set("names",ns);D.names=ns;
+   SFX.lock();newG(ns,D.mode,D.len);wipeTo(()=>S.intro());
+  };
+ });
+};
+
+S.intro=()=>{
+ render(`<div class="anim" style="padding-top:34px">
+ <div class="kick">the room</div>
+ <h2 class="tL" style="margin:14px 0 18px">${N()} roommates just sat down.</h2>
+ <p class="lede">At most ${N()>=6?"two of them are":"one of them is"} running something tonight. The rest are just being weird for their own reasons.</p>
+ <div class="wrap" style="margin:20px 0">${G.players.map((p,i)=>chip(i,p.name)).join("")}</div>
+ <div class="rule"></div>
+ <p class="sm">Everybody gets a card. Everybody gets a job. Everybody gets intel. Take exactly as long as each other reading it.</p>
+ <div class="gap lg"></div><button class="btn p" id="g">Deal the cards</button></div>`,()=>{
+  $("#g").onclick=()=>{SFX.rev();startRound();};
+ });
+};
+/* ============================================================
+   TRUST NO ONE — ROUND ENGINE
+   ============================================================ */
+function freshIdx(used,len){
+ if(used.length>=len)used.length=0;
+ let i,g=0;do{i=rnd(len);g++;}while(used.includes(i)&&g<300);
+ used.push(i);return i;
+}
+function sub(text,map){
+ return text.replace(/\{([abc])\}/g,(m,k)=>map[k]||"somebody");
+}
+function tokenMap(exclude){
+ const pool=shuffle(G.players.map((p,i)=>i).filter(i=>!exclude||!exclude.includes(i)));
+ const nm=i=>G.players[pool[i%pool.length]].name;
+ return {a:nm(0),b:nm(1),c:nm(2)};
+}
+function diffOK(d){return G.mode==="psycho"?(d==="H"||d==="X"):true;}
+function drawMission(mi){
+ const others=G.players.map((p,i)=>i).filter(i=>i!==mi);
+ let m=null;
+ for(let t=0;t<90;t++){
+  if(Math.random()<.2){const g=GENP.make();if(diffOK(g.d)){m={t:g.t,d:g.d,ctr:g.ctr,c:"GEN"};break;}continue;}
+  const idx=freshIdx(G.uM,MIS.length),c=MIS[idx];
+  if(!diffOK(c[1]))continue;
+  if(G.mode==="chaos"&&c[1]==="E"&&Math.random()<.55)continue;
+  m={t:c[0],d:c[1],ctr:c[2],c:c[3],auto:c[4]};break;
+ }
+ if(!m){const c=pick(MIS.filter(x=>diffOK(x[1])))||MIS[0];m={t:c[0],d:c[1],ctr:c[2],c:c[3],auto:c[4]};}
+ const pr=shuffle(others);
+ m.A=pr[0];m.B=pr[1]!==undefined?pr[1]:pr[0];
+ m.text=m.t.replace(/\{a\}/g,G.players[m.A].name).replace(/\{b\}/g,G.players[m.B].name);
+ m.owner=mi;m.done=undefined;
+ return m;
+}
+function chooseManips(k){
+ const min=Math.min(...G.mCount);
+ let pool=shuffle(G.players.map((p,i)=>i).filter(i=>G.mCount[i]===min));
+ const out=[];
+ while(out.length<k){
+  if(!pool.length)pool=shuffle(G.players.map((p,i)=>i).filter(i=>!out.includes(i)));
+  const c=pool.shift();
+  if(c===undefined)break;
+  if(out.length===0&&G.last.length>=2&&G.last[G.last.length-1]===c&&G.last[G.last.length-2]===c&&pool.length){pool.push(c);continue;}
+  out.push(c);
+ }
+ out.forEach(i=>G.mCount[i]++);
+ G.last.push(out[0]);if(G.last.length>5)G.last.shift();
+ return out;
+}
+function manipCount(){
+ const n=N();
+ let k=n<=5?1:2;
+ if(G.mode==="double")k++;
+ if(G.mode==="chaos"&&n>=9)k++;
+ return clamp(k,1,Math.max(1,n-2));
+}
+
+function startRound(){
+ G.round++;G.votes={};G.idx=0;G.pend=[];G.realIntel=[];G.res=null;
+ const M=TMODES[G.mode];
+
+ /* scenario */
+ const si=freshIdx(G.uS,SCEN.length),raw=SCEN[si];
+ const map=tokenMap();
+ G.scen={t:raw[0],time:raw[1],d:sub(raw[2],map),sec:(raw[3]||[]).map(s=>sub(s,map))};
+ G.twist=pick(TWISTS);
+ G.case=caseNo();
+ if(G.mode==="speed")G.scen.time=clamp(G.scen.time,60,120);
+ else G.scen.time+=clamp((N()-4)*25,0,150);   /* bigger table, longer floor */
+
+ /* chaos + event */
+ G.chaos=Math.random()<M[2]?pick(CHAOS):null;
+ G.ev=Math.random()<M[3]?pick(EVENTS):null;
+ if(G.ev&&G.ev[0]==="short")G.scen.time=Math.max(60,Math.round(G.scen.time/2));
+
+ /* roles */
+ G.manips=chooseManips(manipCount());
+ G.mis={};
+ G.manips.forEach(mi=>{
+  const list=[drawMission(mi)];
+  if(G.ev&&G.ev[0]==="double"&&G.manips.length===1)list.push(drawMission(mi));
+  G.mis[mi]=list;
+ });
+ const civs=G.players.map((p,i)=>i).filter(i=>!G.manips.includes(i));
+
+ /* mini tasks */
+ G.tasks={};
+ if(!(G.ev&&G.ev[0]==="notasks")){
+  civs.forEach(i=>{
+   const ti=freshIdx(G.uT,TASKS.length),t=TASKS[ti];
+   G.tasks[i]={t:t[0],d:t[1],done:undefined};
+  });
+ }
+
+ /* intel: real counters -> some civilians; scenario secrets -> anyone; decoys -> rest */
+ let realN=N()<=5?1:2;
+ if(G.ev&&G.ev[0]==="reveal")realN++;
+ realN=clamp(realN,1,civs.length);
+ const holders=shuffle(civs).slice(0,realN);
+ const allMis=G.manips.map(mi=>G.mis[mi][0]);
+ G.intel={};
+ holders.forEach((h,k)=>{const w=k%G.manips.length;
+  G.intel[h]={txt:G.mis[G.manips[w]][0].ctr,real:true,vs:G.manips[w]};G.realIntel.push(h);});
+ const secLeft=shuffle(G.scen.sec);
+ const rest=shuffle(G.players.map((p,i)=>i).filter(i=>!holders.includes(i)));
+ rest.forEach(i=>{
+  const s=secLeft.pop();
+  G.intel[i]={txt:s||pick(DECOY),real:false};
+ });
+ G.order=shuffle(G.players.map((p,i)=>i));
+ G.players.forEach((p,i)=>{p.st.rounds++;if(G.manips.includes(i))p.st.manip++;else p.st.inn++;});
+ SFX.lock();S.assign();
+}
+
+S.assign=()=>{
+ render(`<div class="ctr anim" style="padding-top:70px">
+ <div class="lockbox breathe">🔐</div>
+ <h2 class="tL">Dealing<br>the cards</h2>
+ <p class="sm" style="margin-top:16px">Round ${G.round}${G.total?" of "+G.total:""} · ${N()} players</p>
+ <div style="max-width:280px;margin:26px auto 0"><div class="rail" style="gap:5px">${G.players.map(()=>'<i></i>').join("")}</div></div>
+ </div>`,()=>{
+  const bars=document.querySelectorAll(".rail i");
+  bars.forEach((b,k)=>setTimeout(()=>{b.classList.add("on");SFX.tick();},160+k*110));
+  setTimeout(()=>{G.idx=0;wipeTo(()=>S.hand());},400+bars.length*110+250);
+ });
+};
+
+S.hand=()=>{
+ const i=G.order[G.idx],p=G.players[i];
+ render(`<div class="ctr anim" style="padding-top:48px">
+ ${avatar(i,p.name,84)}
+ <div class="kick" style="margin-top:6px">pass the phone to</div>
+ <h2 class="tXL" style="margin:12px 0 20px;font-size:clamp(36px,12vw,54px)">${esc(p.name)}</h2>
+ <p class="sm" style="max-width:26ch;margin:0 auto 28px">Everybody else: look away. Take the same amount of time as everyone else — the scenario is on the card.</p>
+ <button class="btn p" id="r">Open my card</button>
+ <div class="xs" style="margin-top:14px">${G.idx+1} of ${N()}</div></div>`,()=>{
+  $("#r").onclick=()=>{SFX.flip();wipeTo(()=>S.card());};
+ });
+};
+
+S.card=()=>{
+ const i=G.order[G.idx],p=G.players[i],isM=G.manips.includes(i);
+ const intel=G.intel[i],task=G.tasks[i];
+ const revenge=G.rev&&G.rev===i;
+ let role;
+ if(isM){
+  const ms=G.mis[i];
+  role=`<div class="kick">your role</div>
+  <h3 class="tL red" style="margin:8px 0 6px">Manipulator</h3>
+  <p class="sm" style="margin:0 0 14px">You're running an agenda tonight. You do not have to lie to do it.</p>
+  ${ms.map((m,k)=>`<div class="rule" style="margin:12px 0"></div>
+   <div class="kick">${ms.length>1?"mission "+(k+1):"mission"} · ${DIFF[m.d][1]} ${DIFF[m.d][0]}</div>
+   <p style="margin:8px 0 0;font-size:17.5px;line-height:1.45">${esc(m.text)}</p>
+   ${m.auto?`<div class="xs gold" style="margin-top:6px">Auto-checked from the ballots. No self-reporting on this one.</div>`:""}`).join("")}`;
+ }else{
+  role=`<div class="kick">your role</div>
+  <h3 class="tL blue" style="margin:8px 0 6px">Innocent</h3>
+  <p class="sm" style="margin:0 0 14px">No agenda. Find whoever has one, and finish your own little job while you're at it.</p>
+  <div class="rule" style="margin:12px 0"></div>
+  <div class="kick">${task?"your mini task · "+DIFF[task.d][1]+" +"+DIFF[task.d][2]:"no task tonight"}</div>
+  <p style="margin:8px 0 0;font-size:17.5px;line-height:1.45">${task?esc(task.t):"Clean round. Just find the agenda."}</p>`;
+ }
+ render(`<div class="anim">
+ <div class="card hot scan" style="padding:12px 14px;margin-bottom:14px">
+  ${FP}
+  <div style="display:flex;align-items:center;gap:11px;position:relative">
+   ${avatar(i,p.name,40)}
+   <div><div class="kick red">secret screen</div><div class="tS">Only ${esc(p.name)} looks at this.</div>
+   <div class="case" style="margin-top:3px">${esc(G.case)}</div></div></div></div>
+
+ <div class="file-tab">brief</div>
+ <div class="card t file-body"><div class="kick">tonight's scenario</div>
+  <h3 class="tM" style="margin:8px 0 10px">${esc(G.scen.t)}</h3>
+  <p class="sm" style="margin:0;white-space:pre-line;color:var(--dim)">${esc(G.scen.d)}</p>
+  <div class="xs" style="margin-top:10px">⏱ ${mmss(G.scen.time)} on the clock</div>
+  ${G.twist?`<div class="rule" style="margin:12px 0"></div><p class="sm gold" style="margin:0">${esc(G.twist)}</p>`:""}
+ </div>
+
+ <div style="height:14px"></div>
+ <div class="dossier scan"><span class="tape tl"></span><span class="tape br"></span>
+  <span class="stamp">EYES ONLY</span>${role}</div>
+
+ <div style="height:12px"></div>
+ <div class="file-tab">intel</div>
+ <div class="card cool file-body"><div class="kick blue">source unverified</div>
+  <p class="sm" style="margin:8px 0 0;color:#cfe4f5">${esc(intel.txt)}</p></div>
+
+ ${G.chaos?`<div style="height:12px"></div><div class="card hot"><div class="kick red">chaos card · ${esc(G.chaos[0])}</div>
+  <p class="sm" style="margin:8px 0 0">${esc(G.chaos[1])}</p></div>`:""}
+ ${G.ev?`<div style="height:12px"></div><div class="card gld"><div class="kick gold">${esc(G.ev[1])}</div>
+  <p class="sm" style="margin:8px 0 0">${esc(G.ev[2])}</p></div>`:""}
+ ${revenge?`<div style="height:12px"></div><div class="card gld"><div class="kick gold">revenge opportunity</div>
+  <p class="sm" style="margin:8px 0 0">They played you last round. Name a manipulator correctly this round for <b>+2</b>.</p></div>`:""}
+
+ <div class="gap lg"></div>
+ <p class="ctr sm">Memorise it. Don't screenshot it. Don't leave it open.</p>
+ <button class="btn p" id="h">Hide &amp; pass the phone</button></div>`,()=>{
+  $("#h").onclick=()=>{
+   SFX.lock();G.idx++;
+   wipeTo(()=>G.idx<N()?S.hand():S.brief());
+  };
+ });
+};
+
+S.brief=()=>{
+ render(`${head("ROUND "+G.round,sndBtn())}
+ <div class="anim"><div class="kick">everybody has read their card</div>
+ <h2 class="tL" style="margin:12px 0 16px">${esc(G.scen.t)}</h2>
+ <div class="card t"><p style="margin:0;white-space:pre-line;line-height:1.6">${esc(G.scen.d)}</p>
+ ${G.twist?`<div class="rule"></div><p class="sm gold" style="margin:0">${esc(G.twist)}</p>`:""}</div>
+ ${G.chaos?`<div style="height:12px"></div><div class="card hot"><div class="kick red">chaos · ${esc(G.chaos[0])}</div><p class="sm" style="margin:8px 0 0">${esc(G.chaos[1])}</p></div>`:""}
+ ${G.ev?`<div style="height:12px"></div><div class="card gld"><div class="kick gold">${esc(G.ev[1])}</div><p class="sm" style="margin:8px 0 0">${esc(G.ev[2])}</p></div>`:""}
+ <div class="gap lg"></div>
+ <button class="btn p" id="g">Start the ${mmss(G.scen.time)} argument</button>
+ <div class="gap"></div><button class="btn s gh" id="hs">Round history</button></div>`,()=>{
+  bindSnd();
+  $("#g").onclick=()=>{SFX.flip();S.disc(G.scen.time);};
+  $("#hs").onclick=()=>{SFX.tap();S.hist("brief");};
+ });
+};
+
+S.disc=(total)=>{
+ let left=total,paused=false;const R=104,C=2*Math.PI*R;
+ render(`<div class="anim ctr" style="padding-top:12px">
+ <div class="kick">discussion</div>
+ <div class="ring" style="margin-top:16px">
+  <svg width="236" height="236" viewBox="0 0 236 236">
+   <circle cx="118" cy="118" r="${R}" fill="none" stroke="#1e1a27" stroke-width="9"/>
+   <circle id="arc" cx="118" cy="118" r="${R}" fill="none" stroke="url(#gr)" stroke-width="9" stroke-linecap="round"
+     stroke-dasharray="${C}" stroke-dashoffset="0"/>
+   <defs><linearGradient id="gr" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0%" stop-color="#ff4d6d"/><stop offset="100%" stop-color="#f0c96b"/></linearGradient></defs>
+  </svg>
+  <div class="mid"><div><div class="clock" id="ck">${mmss(left)}</div>
+   <div class="xs ctr" style="margin-top:6px">${esc(G.scen.t)}</div></div></div>
+ </div>
+ <p class="lede" style="margin-top:18px">Talk. Negotiate. Lie. Watch their hands.</p>
+ <div class="card t" style="text-align:left;margin-top:16px">
+  <p class="sm" style="margin:0;white-space:pre-line;color:var(--dim)">${esc(G.scen.d)}</p>
+  ${G.twist?`<div class="rule"></div><p class="sm gold" style="margin:0">${esc(G.twist)}</p>`:""}
+  ${G.chaos?`<div class="rule"></div><div class="kick red">${esc(G.chaos[0])}</div><p class="sm" style="margin:6px 0 0">${esc(G.chaos[1])}</p>`:""}
+ </div>
+ <div class="row" style="margin-top:16px">
+  <button class="btn s" id="pz">Pause</button><button class="btn s" id="pl">+1 min</button></div>
+ <div class="gap"></div><button class="btn p" id="en">End discussion &amp; vote</button></div>`,()=>{
+  const ck=$("#ck"),arc=$("#arc");
+  const draw=()=>{arc.setAttribute("stroke-dashoffset",String(C*(1-left/total)));};
+  draw();
+  TIMER=setInterval(()=>{
+   if(paused)return;
+   left--;
+   if(left<=0){clearInterval(TIMER);SFX.alert();return S.up(false);}
+   ck.textContent=mmss(left);draw();
+   if(left<=10){ck.classList.add("warn");SFX.tick();}
+   else if(left<=30&&left%5===0)SFX.tick();
+  },1000);
+  $("#pz").onclick=e=>{paused=!paused;e.target.textContent=paused?"Resume":"Pause";SFX.tap();};
+  $("#pl").onclick=()=>{left+=60;total+=60;draw();ck.textContent=mmss(left);SFX.tap();toast("+1 minute");};
+  $("#en").onclick=()=>{clearInterval(TIMER);SFX.lock();S.up(true);};
+ });
+};
+S.up=(early)=>{
+ render(`<div class="ctr anim" style="padding-top:96px">
+ <h2 class="tXL ${early?"":"shake"}" style="font-size:clamp(40px,13vw,62px)">${early?"That's<br>enough":"Time's<br>up"}</h2>
+ <p class="lede" style="margin-top:20px">Stop talking. Start pointing.</p>
+ <div class="gap lg"></div><button class="btn p" id="g">Begin the vote</button></div>`,()=>{
+  $("#g").onclick=()=>{SFX.flip();G.idx=0;G.order=shuffle(G.players.map((p,i)=>i));wipeTo(()=>S.vh());};
+ });
+};
+
+/* ---------- voting ---------- */
+S.vh=(locked)=>{
+ const i=G.order[G.idx],p=G.players[i];
+ render(`<div class="ctr anim" style="padding-top:${locked?28:48}px">
+ ${locked?`<div class="pill gr" style="margin-bottom:18px">\ud83d\udd12 previous vote sealed</div>`:""}
+ ${avatar(i,p.name,84)}
+ <div class="kick" style="margin-top:6px">pass the phone to</div>
+ <h2 class="tXL" style="margin:12px 0 18px;font-size:clamp(36px,12vw,54px)">${esc(p.name)}</h2>
+ ${G.ev&&G.ev[0]==="justify"?`<p class="sm gold" style="max-width:30ch;margin:0 auto 16px">Hard mode: say your one-sentence reason out loud before you lock it.</p>`:""}
+ <p class="sm" style="max-width:26ch;margin:0 auto 26px">Sealed ballot. Nothing is shown until every vote is in.</p>
+ <button class="btn p" id="g">I'm ${esc(p.name)}</button>
+ <div class="xs" style="margin-top:14px">${G.idx+1} of ${N()}</div></div>`,()=>{
+  $("#g").onclick=()=>{SFX.flip();wipeTo(()=>S.vote());};
+ });
+};
+S.vote=()=>{
+ const i=G.order[G.idx];let sel=null;
+ render(`<div class="anim">
+ <div class="card hot" style="padding:12px 14px;margin-bottom:16px"><div style="display:flex;align-items:center;gap:11px">
+  ${avatar(i,G.players[i].name,40)}<div><div class="kick red">sealed ballot</div><div class="tS">${esc(G.players[i].name)} only.</div></div></div></div>
+ <h2 class="tL">Who is running<br>an agenda?</h2>
+ <div class="stack tight" style="margin-top:16px">
+ ${G.players.map((p,k)=>k===i?"":`<button class="btn" data-v="${k}"><div class="l">
+   <span style="display:flex;align-items:center;gap:10px"><span class="dot" style="background:${PC[k%PC.length]}"></span>${esc(p.name)}</span>
+   <span class="r">${p.score} pts</span></div></button>`).join("")}
+ </div>
+ <div class="gap"></div><button class="btn p" id="lk" disabled>Lock it in</button></div>`,()=>{
+  document.querySelectorAll("[data-v]").forEach(b=>b.onclick=()=>{
+   sel=+b.dataset.v;SFX.tap();
+   document.querySelectorAll("[data-v]").forEach(x=>x.classList.toggle("sel",x===b));
+   $("#lk").disabled=false;
+  });
+  $("#lk").onclick=()=>{if(sel===null)return;G.votes[i]=sel;SFX.lock();G.idx++;
+   wipeTo(()=>G.idx<N()?S.vh(true):S.vl());};
+ });
+};
+S.vl=()=>{
+ render(`<div class="ctr anim" style="padding-top:80px">
+ <div class="seal">\ud83d\udd12</div><h2 class="tL">All ${N()} ballots<br>are sealed</h2>
+ <p class="sm" style="margin-top:16px">Put the phone in the middle of the table where everybody can see it.</p>
+ <div class="gap lg"></div><button class="btn p" id="g">Break the seal</button></div>`,()=>{
+  $("#g").onclick=()=>{SFX.rev();wipeTo(()=>S.ri());};
+ });
+};
+S.ri=()=>{
+ render(`<div class="ctr anim" style="padding-top:100px">
+ <h2 class="tXL flick" style="font-size:clamp(40px,13vw,62px)">The votes<br>are in</h2>
+ <div class="gap lg"></div><button class="btn p" id="g">Open them</button></div>`,()=>{
+  $("#g").onclick=()=>{SFX.rev();S.vr(N()>=6?N()-1:0);};
+ });
+};
+S.vr=(n)=>{
+ const seq=G.order,big=N()>=6,last=n>=seq.length-1;
+ const tally={};seq.slice(0,n+1).forEach(v=>{tally[G.votes[v]]=(tally[G.votes[v]]||0)+1;});
+ const mx=Math.max(0,...Object.values(tally));
+ render(`<div class="anim">
+ <div class="case ctr">${esc(G.case)} \u00b7 evidence board</div>
+ <div class="board" style="margin-top:20px"><div class="thread"></div>
+ <div class="stack tight">
+ ${seq.map((v,k)=>k<=n?`<div class="card ev ${k===n&&!big?"hot anim2":"t"}" style="padding:14px;${big?`animation:pop .34s cubic-bezier(.2,.9,.3,1) both;animation-delay:${k*.16}s`:""}">
+   <div class="sp"><span class="tS" style="display:flex;align-items:center;gap:9px"><span class="dot" style="background:${PC[v%PC.length]}"></span>${esc(G.players[v].name)}</span>
+   <span class="case">named</span><span class="tS red">${esc(G.players[G.votes[v]].name)}</span></div></div>`
+  :`<div class="card ev blank" style="padding:14px;opacity:.3"><div class="sp"><span class="redact">\u2588\u2588\u2588\u2588\u2588\u2588</span><span class="case">named</span><span class="redact">\u2588\u2588\u2588\u2588\u2588\u2588</span></div></div>`).join("")}
+ </div></div>
+ <div class="rule"></div><div class="kick">the board</div>
+ <div class="wrap" style="margin-top:10px">${Object.entries(tally).sort((a,b)=>b[1]-a[1]).map(([k,v])=>
+   `<span class="pill ${v===mx&&mx>=2?"rd":""}">${esc(G.players[k].name)} \u00b7 ${v}</span>`).join("")}</div>
+ ${last?`<p class="xs" style="margin-top:10px">${mx>=2?"Two or more names on the same person makes it stick.":"Nothing stuck \u2014 no name got two votes."}</p>`:""}
+ <div class="gap lg"></div><button class="btn p" id="g">${last?"Name the agenda":"Next ballot"}</button></div>`,()=>{
+  if(big&&!last)return;
+  $("#g").onclick=()=>{if(last){SFX.rev();wipeTo(()=>S.mr());}else{SFX.flip();S.vr(n+1);}};
+ });
+};
+function tallyVotes(){
+ const t={};Object.values(G.votes).forEach(v=>{t[v]=(t[v]||0)+1;});
+ const max=Math.max(0,...Object.values(t));
+ const top=Object.keys(t).filter(k=>t[k]===max).map(Number);
+ /* an accusation only sticks if at least two people named the same person.
+    everyone tied at the top goes on the board — a tie no longer protects anybody. */
+ const accused=max>=2?top:[];
+ return {t,max,top,accused,tie:top.length>1};
+}
+S.mr=()=>{
+ const {accused}=tallyVotes();
+ render(`<div class="ctr anim" style="padding-top:34px">
+ <div class="case">${esc(G.case)} · file closed</div>
+ <div style="margin:20px 0 6px"><span class="inkstamp">${G.manips.length>1?"agendas":"agenda"} identified</span></div>
+ <div class="wrap" style="justify-content:center;margin:22px 0 10px">${G.manips.map(i=>avatar(i,G.players[i].name,74)).join("")}</div>
+ <h2 class="tXL shake" style="margin:6px 0 12px;font-size:clamp(34px,11vw,52px);color:var(--red2)">${G.manips.map(i=>esc(G.players[i].name)).join(" &amp; ")}</h2>
+ ${G.manips.length>1?`<p class="lede">${G.manips.length} agendas. None of them knew about the others.</p>`:""}
+ <div class="rule"></div>
+ <p class="sm">${accused.length?`The room put <b>${accused.map(i=>esc(G.players[i].name)).join(", ")}</b> on the board.`:"Nobody got two votes. The board is empty — everybody walks."}</p>
+ <div class="gap lg"></div><button class="btn p" id="g">Open the debrief</button></div>`,()=>{
+  $("#g").onclick=()=>{SFX.flip();G.pend=G.manips.slice();wipeTo(()=>S.mcheck());};
+ });
+};
+
+/* ---------- debrief ---------- */
+function autoCheck(m){
+ const o=m.owner,others=G.players.map((p,i)=>i).filter(i=>i!==o);
+ const against=others.filter(x=>G.votes[x]===o).length;
+ const {accused}=tallyVotes();
+ switch(m.auto){
+  case "noVotes":return against===0;
+  case "aVotesB":return G.votes[m.A]===m.B;
+  case "sameWrong":{const t={};others.forEach(x=>{if(G.votes[x]!==o)t[G.votes[x]]=(t[G.votes[x]]||0)+1;});return Math.max(0,...Object.values(t))>=2;}
+  case "exactlyOne":return against===1;
+  case "someNotMost":return against>=1&&!accused.includes(o);
+ }
+ return false;
+}
+S.mcheck=()=>{
+ if(!G.pend.length)return S.tdebrief();
+ const mi=G.pend[0],ms=G.mis[mi];
+ render(`<div class="anim">
+ <div class="card hot" style="padding:12px 14px;margin-bottom:14px"><div style="display:flex;align-items:center;gap:11px">
+  ${avatar(mi,G.players[mi].name,40)}<div><div class="kick red">private debrief</div>
+  <div class="tS">${esc(G.players[mi].name)} only. Nobody leans over.</div></div></div></div>
+ <div class="dossier"><span class="stamp">DEBRIEF</span><div class="kick">your mission${ms.length>1?"s":""}</div>
+ ${ms.map((m,k)=>`<p style="margin:10px 0 0;font-size:17px;line-height:1.45">${ms.length>1?"<b>"+(k+1)+". </b>":""}${esc(m.text)}</p>
+  <div class="xs" style="margin-top:4px">${DIFF[m.d][1]} ${DIFF[m.d][0]}</div>`).join("")}</div>
+ <div class="gap"></div>
+ ${ms.map((m,k)=>{
+  if(m.auto){const ok=autoCheck(m);m.done=ok;
+   return `<div class="card ${ok?"grn":"hot"}" style="margin-bottom:10px"><div class="kick ${ok?"green":"red"}">auto-checked${ms.length>1?" · mission "+(k+1):""}</div>
+   <p class="tS" style="margin:8px 0 0">${ok?"Completed.":"Failed."}</p>
+   <p class="sm" style="margin:6px 0 0">Read straight off the ballots. Nothing to self-report.</p></div>`;}
+  return `<div class="card t" style="margin-bottom:10px"><div class="kick">${ms.length>1?"mission "+(k+1)+" · ":""}did you get it done?</div>
+   <p class="sm" style="margin:8px 0 12px">Be honest. The whole thing falls apart if this answer isn't real.</p>
+   <div class="row"><button class="btn s" data-m="${k}" data-y="1">✅ Yes</button><button class="btn s" data-m="${k}" data-y="0">❌ No</button></div></div>`;
+ }).join("")}
+ <button class="btn p" id="d" ${ms.every(m=>m.done!==undefined)?"":"disabled"}>Confirm &amp; pass on</button></div>`,()=>{
+  document.querySelectorAll("[data-m]").forEach(b=>b.onclick=()=>{
+   const k=+b.dataset.m;ms[k].done=b.dataset.y==="1";SFX.tap();
+   document.querySelectorAll(`[data-m="${k}"]`).forEach(x=>{x.classList.toggle("selg",x===b&&b.dataset.y==="1");x.classList.toggle("sel",x===b&&b.dataset.y==="0");});
+   $("#d").disabled=!ms.every(m=>m.done!==undefined);
+  });
+  $("#d").onclick=()=>{SFX.lock();G.pend.shift();wipeTo(()=>S.mcheck());};
+ });
+};
+S.tdebrief=()=>{
+ const ids=Object.keys(G.tasks).map(Number);
+ if(!ids.length)return scoreRound();
+ render(`<div class="anim"><div class="kick">out loud, together</div>
+ <h2 class="tL" style="margin:12px 0 8px">Mini tasks</h2>
+ <p class="sm">Everybody's little job, read out. The room decides who actually pulled it off.</p>
+ <div class="stack tight" style="margin-top:16px">
+ ${ids.map(i=>`<div class="card t"><div class="sp" style="align-items:flex-start">
+  <div style="flex:1"><div class="tS" style="display:flex;align-items:center;gap:9px"><span class="dot" style="background:${PC[i%PC.length]}"></span>${esc(G.players[i].name)}</div>
+  <div class="sm" style="margin-top:6px">${esc(G.tasks[i].t)}</div></div>
+  <span class="pill">${DIFF[G.tasks[i].d][1]} +${DIFF[G.tasks[i].d][2]}</span></div>
+  <div class="row" style="margin-top:10px"><button class="btn xsb" data-t="${i}" data-y="1">✅ Done</button>
+  <button class="btn xsb" data-t="${i}" data-y="0">❌ Nope</button></div></div>`).join("")}
+ </div>
+ <div class="gap lg"></div><button class="btn p" id="d" disabled>Score the round</button></div>`,()=>{
+  const mark=()=>{$("#d").disabled=ids.some(i=>G.tasks[i].done===undefined);};
+  document.querySelectorAll("[data-t]").forEach(b=>b.onclick=()=>{
+   const i=+b.dataset.t;G.tasks[i].done=b.dataset.y==="1";SFX.tap();
+   document.querySelectorAll(`[data-t="${i}"]`).forEach(x=>{x.classList.toggle("selg",x===b&&b.dataset.y==="1");x.classList.toggle("sel",x===b&&b.dataset.y==="0");});
+   mark();
+  });
+  $("#d").onclick=()=>{SFX.lock();wipeTo(()=>scoreRound());};
+ });
+};
+
+/* ---------- scoring ---------- */
+function scoreRound(){
+ const delta=G.players.map(()=>0),notes=G.players.map(()=>[]);
+ const {t:tal,accused}=tallyVotes();
+ const caught=i=>accused.includes(i);
+ const framed=accused.length>0&&accused.every(x=>!G.manips.includes(x));
+
+ G.manips.forEach(mi=>{
+  const p=G.players[mi],ms=G.mis[mi];
+  const anyDone=ms.some(m=>m.done),allDone=ms.every(m=>m.done);
+  ms.forEach(m=>{if(m.done){
+   delta[mi]+=3;notes[mi].push("Agenda done +3");p.st.done++;
+   const ex=DIFF[m.d][3];if(ex){delta[mi]+=ex;notes[mi].push(DIFF[m.d][0]+" +"+ex);p.st.hard++;}
+  }});
+  if(!caught(mi)){
+   if(anyDone){delta[mi]+=3;notes[mi].push("Never caught +3");}
+   else{delta[mi]+=1;notes[mi].push("Walked away +1");}
+   p.st.clean++;
+   if(framed){delta[mi]+=2;notes[mi].push("Innocent on the board +2");p.st.misdir++;p.st.chaos++;}
+  }else notes[mi].push("Caught by the room +0");
+  p.st.pers+=(anyDone?2:0)+(framed?2:0);
+  if(allDone&&!caught(mi))p.st.betray++;
+ });
+
+ const civs=G.players.map((p,i)=>i).filter(i=>!G.manips.includes(i));
+ const right=civs.filter(i=>G.manips.includes(G.votes[i]));
+ civs.forEach(i=>{
+  const p=G.players[i];
+  if(G.manips.includes(G.votes[i])){
+   delta[i]+=3;notes[i].push("Named an agenda +3");p.st.correct++;
+   if(right.length===1){delta[i]+=2;notes[i].push("Only one who saw it +2");}
+   if(G.rev===i){delta[i]+=2;notes[i].push("Revenge +2");}
+  }else{notes[i].push("Wrong name +0");p.st.wrong++;}
+  const tk=G.tasks[i];
+  if(tk&&tk.done){const b=DIFF[tk.d][2];delta[i]+=b;notes[i].push("Mini task +"+b);p.st.tasks++;}
+  const vs=G.intel[i]&&G.intel[i].vs;
+  if(vs!==undefined&&vs!==null&&G.mis[vs]&&G.mis[vs].every(x=>!x.done)){
+   delta[i]+=2;notes[i].push("Counter-intel held +2");
+  }
+ });
+ if(civs.length>1&&right.length*2>civs.length)right.forEach(i=>{delta[i]+=1;notes[i].push("Room read it +1");});
+
+ G.players.forEach((p,i)=>{
+  const got=tal[i]||0;p.st.votesGot+=got;
+  if(!G.manips.includes(i))p.st.suspInn+=got;
+ });
+
+ const victim=civs.find(i=>!G.manips.includes(G.votes[i])&&G.manips.some(m=>G.mis[m].some(x=>x.done)));
+ G.rev=victim!==undefined?victim:null;
+ delta.forEach((d,i)=>{G.players[i].score+=d;});
+
+ const m0=G.manips[0],doneM=G.mis[m0].some(x=>x.done),cau=caught(m0);
+ let badge,col;
+ if(doneM&&!cau){badge="\ud83d\udd34 FULL MANIPULATOR WIN";col="var(--red2)";}
+ else if(doneM&&cau){badge="\ud83d\udfe1 PARTIAL WIN \u2014 DONE BUT CAUGHT";col="var(--gold)";}
+ else if(!doneM&&!cau){badge="\ud83d\udd35 WALKED AWAY, AGENDA FAILED";col="var(--blue)";}
+ else{badge="\ud83d\udfe2 THE ROOM WINS";col="var(--green)";}
+
+ G.hist.push({r:G.round,sc:G.scen.t,cs:G.case,ch:G.chaos?G.chaos[0]:null,ev:G.ev?G.ev[1]:null,
+  manips:G.manips.slice(),mis:G.manips.map(i=>G.mis[i].map(m=>({t:m.text,d:m.d,done:!!m.done}))),
+  tasks:Object.keys(G.tasks).map(i=>({i:+i,t:G.tasks[i].t,done:!!G.tasks[i].done})),
+  votes:Object.assign({},G.votes),accused:accused.slice(),delta:delta.slice(),badge,caught:cau});
+ store.set("rounds",store.get("rounds",0)+1);
+ (doneM&&!cau)?SFX.fail():SFX.win();
+ G.res=[delta,notes,badge,col];
+ S.res();
+}
+
+S.res=()=>{
+ const [delta,notes,badge,col]=G.res;
+ const sorted=G.players.map((p,i)=>({p,i})).sort((a,b)=>b.p.score-a.p.score);
+ const done=G.total>0&&G.round>=G.total;
+ render(`${head("ROUND "+G.round+" RESULT",`<button class="icb" id="hb">History</button>${sndBtn()}`)}
+ <div class="anim">
+ <div class="card ctr" style="border-color:${col}"><div class="case">${esc(G.case)}</div>
+  <div class="tM" style="color:${col};margin-top:8px">${badge}</div></div>
+ <div class="rule"></div><div class="kick">the file</div>
+ ${G.manips.map(mi=>`<div class="card t" style="margin-top:10px">
+  <div class="tS red" style="display:flex;align-items:center;gap:9px"><span class="dot" style="background:${PC[mi%PC.length]}"></span>${esc(G.players[mi].name)}</div>
+  ${G.mis[mi].map(m=>`<p class="sm" style="margin:8px 0 0">${esc(m.text)}
+   <b style="color:${m.done?"var(--green)":"var(--red2)"}"> — ${m.done?"done":"failed"}</b></p>`).join("")}</div>`).join("")}
+ ${Object.keys(G.tasks).length?`<div class="rule"></div><div class="kick">mini tasks</div>
+ <div class="stack tight" style="margin-top:10px">${Object.keys(G.tasks).map(i=>`<div class="card" style="padding:12px">
+  <div class="sp"><span class="sm"><b>${esc(G.players[i].name)}</b> — ${esc(G.tasks[i].t)}</span>
+  <span style="color:${G.tasks[i].done?"var(--green)":"var(--muted)"};font-weight:700">${G.tasks[i].done?"✓":"✕"}</span></div></div>`).join("")}</div>`:""}
+ <div class="rule"></div><div class="kick">scoring</div>
+ <div class="stack tight" style="margin-top:10px">
+ ${G.players.map((p,i)=>`<div class="card t" style="padding:14px">
+  <div class="sp"><b class="tS" style="display:flex;align-items:center;gap:9px"><span class="dot" style="background:${PC[i%PC.length]}"></span>${esc(p.name)}</b>
+  <span class="${delta[i]>0?"gold":"dimc"}" style="font-weight:800;font-size:18px">${delta[i]>0?"+":""}${delta[i]}</span></div>
+  <div class="xs" style="margin-top:6px">${notes[i].length?notes[i].map(esc).join(" · "):"nothing this round"}</div></div>`).join("")}
+ </div>
+ <div class="rule"></div><div class="kick">standings</div>
+ <table style="margin-top:8px">${sorted.map((r,k)=>`<tr><td>${["🥇","🥈","🥉"][k]||"·"} ${esc(r.p.name)}</td><td class="n">${r.p.score}</td></tr>`).join("")}</table>
+ <div class="gap lg"></div>
+ <button class="btn p" id="nx">${done?"Final scoreboard":"Next round"}</button>
+ ${(!done&&G.total===0)?`<div class="gap"></div><button class="btn s gh" id="st">Stop here and score it</button>`:""}
+ </div>`,()=>{
+  bindSnd();
+  $("#hb").onclick=()=>{SFX.tap();S.hist("res");};
+  $("#nx").onclick=()=>{SFX.flip();wipeTo(()=>done?S.final():startRound());};
+  const st=$("#st");if(st)st.onclick=()=>{SFX.flip();wipeTo(()=>S.final());};
+ });
+};
+
+S.hist=(back)=>{
+ render(`${head("GAME HISTORY",`<button class="icb" id="bk">Back</button>`)}
+ <div class="anim"><h2 class="tL">History</h2>
+ ${!G.hist.length?`<div class="card" style="margin-top:16px"><p class="sm" style="margin:0">No finished rounds yet.</p></div>`:""}
+ <div class="stack" style="margin-top:16px">
+ ${G.hist.slice().reverse().map(h=>`<div class="card t">
+  <div class="sp"><div class="kick">round ${h.r}</div><div class="xs">${esc(h.sc)}</div></div>
+  <div class="tS red" style="margin-top:10px">${h.manips.map(i=>esc(G.players[i].name)).join(" &amp; ")}</div>
+  ${h.mis.flat().map(m=>`<div class="sm" style="margin-top:6px">${esc(m.t)} <b style="color:${m.done?"var(--green)":"var(--red2)"}">— ${m.done?"done":"failed"}</b></div>`).join("")}
+  <div class="rule" style="margin:12px 0"></div>
+  <div class="wrap">${Object.keys(h.votes).map(k=>`<span class="pill">${esc(G.players[k].name)} → ${esc(G.players[h.votes[k]].name)}</span>`).join("")}</div>
+  <div class="sm" style="margin-top:10px">${h.badge}${h.ch?" · chaos: "+esc(h.ch):""}${h.ev?" · "+esc(h.ev):""}</div>
+  <div class="xs" style="margin-top:4px">${G.players.map((p,i)=>esc(p.name)+" "+(h.delta[i]>0?"+":"")+h.delta[i]).join(" · ")}</div>
+ </div>`).join("")}</div></div>`,()=>{
+  $("#bk").onclick=()=>{SFX.tap();back==="res"?S.res():back==="final"?S.final():S.brief();};
+ });
+};
+/* ============================================================
+   FINAL SCOREBOARD (Trust No One)
+   ============================================================ */
+function pc(a,b){return b>0?Math.round(clamp(a/b,0,1)*100):0;}
+function meters(p){const s=p.st;return {
+ "TRUSTED":pc(Math.max(0,s.inn*2-s.suspInn),Math.max(1,s.inn*2)),
+ "DECEPTION":pc(s.done,Math.max(1,s.manip)),
+ "DETECTION":pc(s.correct,Math.max(1,s.inn)),
+ "CHAOS":pc(s.misdir+s.wrong,Math.max(1,s.rounds*2)),
+ "PERSUASION":pc(s.pers,Math.max(1,s.manip*4)),
+ "DILIGENCE":pc(s.tasks,Math.max(1,s.inn))};}
+function titles(){
+ const used=new Set(),out=[];
+ shuffle(TITLES).forEach(t=>{
+  if(out.length>=Math.min(5,N()))return;
+  const r=G.players.map((p,i)=>({i,v:t[3](p)})).filter(x=>!used.has(x.i)&&x.v>=t[4]).sort((a,b)=>b.v-a.v);
+  if(r.length){used.add(r[0].i);out.push({i:r[0].i,t});}
+ });
+ return out;
+}
+function roast(p){const s=p.st;
+ if(s.manip&&s.clean/s.manip>=.7&&s.done>=2)return pick(ROAST.clean);
+ if(s.manip>=2&&s.clean/Math.max(1,s.manip)<=.34)return pick(ROAST.caught);
+ if(s.inn&&s.correct/Math.max(1,s.inn)>=.65)return pick(ROAST.sniper);
+ if(s.wrong>=3&&s.correct<=1)return pick(ROAST.gullible);
+ if(s.tasks>=3&&s.correct<=1)return pick(ROAST.tasks);
+ if(s.suspInn<=1&&s.inn>=2)return pick(ROAST.quiet);
+ return pick(ROAST.mid);
+}
+S.final=()=>{
+ const sorted=G.players.map((p,i)=>({p,i})).sort((a,b)=>b.p.score-a.p.score);
+ const ttl=titles();
+ const done=G.players.reduce((a,p)=>a+p.st.done,0),tk=G.players.reduce((a,p)=>a+p.st.tasks,0);
+ store.set("life",{rows:sorted.map(r=>({n:r.p.name,s:r.p.score})),done,caught:G.hist.filter(h=>h.caught).length,tasks:tk,mode:TMODES[G.mode][0]});
+ render(`<div class="anim">
+ <div class="kick ctr">final scoreboard</div>
+ <h2 class="tXL ctr" style="margin:14px 0 6px;font-size:clamp(36px,11vw,54px)">It's over</h2>
+ <p class="sm ctr" style="margin-bottom:20px">${G.round} rounds · ${TMODES[G.mode][0]}</p>
+ <div class="stack">
+ ${sorted.map((r,k)=>`<div class="card ${k===0?"gld":"t"}">
+  <div class="sp"><b class="tS" style="display:flex;align-items:center;gap:10px">${["🥇","🥈","🥉"][k]||"·"}
+   <span class="dot" style="background:${PC[r.i%PC.length]}"></span>${esc(r.p.name)}</b>
+   <span class="${k===0?"gold":""}" style="font-weight:800;font-size:22px">${r.p.score}</span></div>
+  <div class="sm" style="margin-top:6px">"${esc(roast(r.p))}"</div></div>`).join("")}
+ </div>
+ <div class="rule"></div><div class="kick">titles</div>
+ <div class="stack tight" style="margin-top:10px">
+ ${ttl.map(x=>`<div class="card" style="padding:14px"><b>${x.t[0]} ${x.t[1]}</b>
+  <div class="sm" style="margin-top:4px">${esc(G.players[x.i].name)} — ${x.t[2]}</div></div>`).join("")}</div>
+ <div class="rule"></div><div class="kick">the night in numbers</div>
+ <table style="margin-top:8px"><tr><th>Player</th><th style="text-align:right">Ag</th><th style="text-align:right">Done</th><th style="text-align:right">Right</th><th style="text-align:right">Wrong</th><th style="text-align:right">Tasks</th></tr>
+ ${G.players.map(p=>`<tr><td>${esc(p.name)}</td><td class="n">${p.st.manip}</td><td class="n">${p.st.done}</td><td class="n">${p.st.correct}</td><td class="n">${p.st.wrong}</td><td class="n">${p.st.tasks}</td></tr>`).join("")}</table>
+ <div class="rule"></div><div class="kick">read-outs</div>
+ ${G.players.map(p=>{const m=meters(p);return `<div class="card t" style="margin-top:10px"><b>${esc(p.name)}</b>
+  ${Object.entries(m).map(([k,v])=>`<div class="meter"><div class="lab">${k}</div><div class="trk"><i style="width:${v}%"></i></div><div class="val">${v}</div></div>`).join("")}</div>`;}).join("")}
+ <p class="sm" style="margin-top:12px">Game stats, not a personality diagnosis.</p>
+ <div class="rule"></div>
+ <div class="stack">
+  <button class="btn p" id="ag">🔥 Play again — same flat</button>
+  <button class="btn" id="ch">Change players</button>
+  <button class="btn gh" id="hi">Game history</button>
+  <button class="btn gh" data-go="home">Main menu</button>
+ </div></div>`,()=>{
+  SFX.win();
+  $("#ag").onclick=()=>{const ns=G.players.map(p=>p.name),uM=G.uM.slice(),uS=G.uS.slice(),uT=G.uT.slice();
+   newG(ns,D.mode,D.len);G.uM=uM;G.uS=uS;G.uT=uT;SFX.rev();wipeTo(()=>startRound());};
+  $("#ch").onclick=()=>{SFX.tap();S.setup();};
+  $("#hi").onclick=()=>{SFX.tap();S.hist("final");};
+ });
+};
+
+/* ============================================================
+   MAFIAOG
+   ============================================================ */
+let MD={cop:true,doc:true,jest:false,time:300};
+function mRoleCounts(n){
+ const imp=n<=6?1:n<=9?2:3;
+ return {imp,cop:MD.cop&&n>=5?1:0,doc:MD.doc&&n>=6?1:0,jest:MD.jest&&n>=7?1:0};
+}
+S.msetup=()=>{
+ const n=D.names.filter(x=>x.trim()).length,c=mRoleCounts(Math.max(4,n));
+ render(`${head("MAFIAOG · SETUP",`<button class="icb" data-go="home">Back</button>`)}
+ <div class="anim"><h2 class="tL vio">MafiaOG</h2>
+ <p class="sm" style="margin:10px 0 16px">Imposters kill at night. The flat argues by day and hangs somebody. Repeat until one side is finished. No tasks, no scenarios.</p>
+ <div class="stack tight" id="pl">
+ ${D.names.map((nm,i)=>`<div class="pRow"><span class="dot" style="background:${PC[i%PC.length]}"></span>
+  <input type="text" id="p${i}" maxlength="16" placeholder="Player ${i+1}" value="${esc(nm)}" autocomplete="off">
+  ${D.names.length>4?`<button class="del" data-del="${i}">✕</button>`:""}</div>`).join("")}</div>
+ <div class="gap"></div>
+ <button class="btn s gh" id="add" ${D.names.length>=10?"disabled":""}>+ Add player</button>
+ <div class="rule"></div><div class="kick">special roles</div>
+ <div class="stack tight" style="margin-top:10px">
+  <button class="btn s" id="rc"><div class="l"><span>🔍 Cop <span class="r" style="display:inline">investigates one player a night</span></span><span class="sw ${MD.cop?"on":""}"><i></i></span></div></button>
+  <button class="btn s" id="rd"><div class="l"><span>🩹 Medic <span class="r" style="display:inline">protects one player a night</span></span><span class="sw ${MD.doc?"on":""}"><i></i></span></div></button>
+  <button class="btn s" id="rj"><div class="l"><span>🤡 Jester <span class="r" style="display:inline">wins alone if voted out</span></span><span class="sw ${MD.jest?"on":""}"><i></i></span></div></button>
+ </div>
+ <div class="rule"></div><div class="kick">day timer</div>
+ <div class="row" style="margin-top:10px">
+  ${[120,300,480].map(t=>`<button class="btn s ${MD.time===t?"sel":""}" data-t="${t}">${t/60} min</button>`).join("")}</div>
+ <div class="gap"></div>
+ <div class="card t"><div class="kick">line-up for ${Math.max(4,n)} players</div>
+  <div class="wrap" style="margin-top:10px">
+   <span class="pill rd">🔪 ${c.imp} imposter${c.imp>1?"s":""}</span>
+   ${c.cop?`<span class="pill on">🔍 cop</span>`:""}${c.doc?`<span class="pill gr">🩹 medic</span>`:""}
+   ${c.jest?`<span class="pill">🤡 jester</span>`:""}
+   <span class="pill">🙂 ${Math.max(0,Math.max(4,n)-c.imp-c.cop-c.doc-c.jest)} civilians</span></div></div>
+ <div class="gap"></div><div id="er" class="sm red" style="min-height:20px"></div>
+ <button class="btn p" id="go">Deal the night</button></div>`,()=>{
+  const save=()=>{D.names=D.names.map((_,i)=>$("#p"+i).value);};
+  document.querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>{save();D.names.splice(+b.dataset.del,1);SFX.tap();S.msetup();});
+  $("#add").onclick=()=>{save();D.names.push("");SFX.tap();S.msetup();};
+  $("#rc").onclick=()=>{save();MD.cop=!MD.cop;SFX.tap();S.msetup();};
+  $("#rd").onclick=()=>{save();MD.doc=!MD.doc;SFX.tap();S.msetup();};
+  $("#rj").onclick=()=>{save();MD.jest=!MD.jest;SFX.tap();S.msetup();};
+  document.querySelectorAll("[data-t]").forEach(b=>b.onclick=()=>{save();MD.time=+b.dataset.t;SFX.tap();S.msetup();});
+  $("#go").onclick=()=>{
+   save();let ns=D.names.map(s=>s.trim()).filter(Boolean);
+   if(ns.length<4){$("#er").textContent="MafiaOG needs at least 4 players.";SFX.fail();return;}
+   const seen={};ns=ns.map(x=>{const k=x.toLowerCase();seen[k]=(seen[k]||0)+1;return seen[k]>1?x+" ("+seen[k]+")":x;});
+   store.set("names",ns);D.names=ns;
+   mNew(ns);SFX.lock();wipeTo(()=>S.mIntro());
+  };
+ });
+};
+function mNew(names){
+ const n=names.length,c=mRoleCounts(n);
+ const roles=[];
+ for(let i=0;i<c.imp;i++)roles.push("imp");
+ if(c.cop)roles.push("cop");
+ if(c.doc)roles.push("doc");
+ if(c.jest)roles.push("jest");
+ while(roles.length<n)roles.push("civ");
+ const shuffled=shuffle(roles);
+ M={players:names.map((nm,i)=>({name:nm,i,role:shuffled[i],alive:true})),
+    day:0,idx:0,order:[],night:{},log:[],over:null,elim:null,copRes:null,votes:{}};
+}
+const alive=()=>M.players.filter(p=>p.alive);
+const aliveIdx=()=>M.players.map((p,i)=>i).filter(i=>M.players[i].alive);
+const mafiaAlive=()=>aliveIdx().filter(i=>MROLES[M.players[i].role].team==="mafia");
+S.mIntro=()=>{
+ const c=mRoleCounts(M.players.length);
+ render(`<div class="anim" style="padding-top:30px">
+ <div class="kick">mafiaog</div>
+ <h2 class="tL" style="margin:14px 0 16px">${M.players.length} of you.<br><span class="red">${c.imp}</span> of you shouldn't be here.</h2>
+ <div class="wrap" style="margin:18px 0">${M.players.map((p,i)=>chip(i,p.name)).join("")}</div>
+ <div class="card t"><div class="kick">tonight's line-up</div><div class="wrap" style="margin-top:10px">
+  <span class="pill rd">🔪 ${c.imp}</span>${c.cop?`<span class="pill on">🔍 1</span>`:""}${c.doc?`<span class="pill gr">🩹 1</span>`:""}${c.jest?`<span class="pill">🤡 1</span>`:""}
+  <span class="pill">🙂 ${M.players.length-c.imp-c.cop-c.doc-c.jest}</span></div></div>
+ <div class="gap lg"></div><button class="btn p" id="g">Hand out the roles</button></div>`,()=>{
+  $("#g").onclick=()=>{SFX.rev();M.idx=0;M.order=shuffle(aliveIdx());wipeTo(()=>S.mHand());};
+ });
+};
+S.mHand=()=>{
+ const i=M.order[M.idx],p=M.players[i];
+ render(`<div class="ctr anim" style="padding-top:48px">${avatar(i,p.name,84)}
+ <div class="kick" style="margin-top:6px">pass the phone to</div>
+ <h2 class="tXL" style="margin:12px 0 20px;font-size:clamp(36px,12vw,54px)">${esc(p.name)}</h2>
+ <p class="sm" style="max-width:26ch;margin:0 auto 28px">Look at it once. Then hide it.</p>
+ <button class="btn p" id="r">Open my role</button>
+ <div class="xs" style="margin-top:14px">${M.idx+1} of ${M.order.length}</div></div>`,()=>{
+  $("#r").onclick=()=>{SFX.flip();wipeTo(()=>S.mCard());};
+ });
+};
+S.mCard=()=>{
+ const i=M.order[M.idx],p=M.players[i],R=MROLES[p.role];
+ const mates=p.role==="imp"?M.players.map((q,k)=>k).filter(k=>k!==i&&M.players[k].role==="imp"):[];
+ render(`<div class="anim">
+ <div class="card hot" style="padding:12px 14px;margin-bottom:14px"><div style="display:flex;align-items:center;gap:11px">
+  ${avatar(i,p.name,40)}<div><div class="kick red">secret screen</div><div class="tS">Only ${esc(p.name)}.</div></div></div></div>
+ <div class="dossier"><span class="stamp">EYES ONLY</span>
+  <div class="kick">your role</div>
+  <h3 class="tL" style="margin:8px 0 8px;color:${R.c}">${R.e} ${R.n}</h3>
+  <p class="sm" style="margin:0">${R.d}</p>
+  ${mates.length?`<div class="rule" style="margin:14px 0"></div><div class="kick red">your people</div>
+   <div class="wrap" style="margin-top:8px">${mates.map(k=>chip(k,M.players[k].name)).join("")}</div>
+   <p class="xs" style="margin-top:8px">You wake together. Agree the kill on the phone — the most-picked name goes.</p>`:""}
+  ${p.role==="imp"&&!mates.length?`<p class="xs" style="margin-top:10px">You're alone in this. Nobody is coming to help.</p>`:""}
+ </div>
+ <div class="gap lg"></div><button class="btn p" id="h">Hide &amp; pass the phone</button></div>`,()=>{
+  $("#h").onclick=()=>{SFX.lock();M.idx++;wipeTo(()=>M.idx<M.order.length?S.mHand():S.night());};
+ });
+};
+S.night=()=>{
+ M.day++;M.night={picks:{},save:null,check:null};M.idx=0;M.order=shuffle(aliveIdx());
+ SFX.night();
+ render(`<div class="ctr anim" style="padding-top:80px">
+ <div style="font-size:52px">🌙</div>
+ <h2 class="tL" style="margin:18px 0 12px">Night ${M.day}</h2>
+ <p class="lede">Everybody closes their eyes. The phone goes round anyway — nobody should be able to tell who acted.</p>
+ <div class="gap lg"></div><button class="btn p" id="g">Start the night</button></div>`,()=>{
+  $("#g").onclick=()=>{SFX.flip();wipeTo(()=>S.nHand());};
+ });
+};
+S.nHand=()=>{
+ const i=M.order[M.idx],p=M.players[i];
+ render(`<div class="ctr anim" style="padding-top:52px">${avatar(i,p.name,84)}
+ <div class="kick" style="margin-top:6px">pass the phone to</div>
+ <h2 class="tXL" style="margin:12px 0 20px;font-size:clamp(36px,12vw,54px)">${esc(p.name)}</h2>
+ <p class="sm" style="max-width:26ch;margin:0 auto 26px">Take the same time as everybody else, whatever your role is.</p>
+ <button class="btn p" id="g">I'm ${esc(p.name)}</button>
+ <div class="xs" style="margin-top:14px">${M.idx+1} of ${M.order.length}</div></div>`,()=>{
+  $("#g").onclick=()=>{SFX.flip();wipeTo(()=>S.nAct());};
+ });
+};
+S.nAct=()=>{
+ const i=M.order[M.idx],p=M.players[i],R=MROLES[p.role];
+ const targets=aliveIdx().filter(k=>k!==i||p.role==="doc");
+ let sel=null;
+ const acts=p.role==="imp"||p.role==="cop"||p.role==="doc";
+ const q=p.role==="imp"?"Who dies tonight?":p.role==="cop"?"Who are you checking?":p.role==="doc"?"Who are you protecting?":"";
+ render(`<div class="anim">
+ <div class="card hot" style="padding:12px 14px;margin-bottom:16px"><div style="display:flex;align-items:center;gap:11px">
+  ${avatar(i,p.name,40)}<div><div class="kick red">night · ${esc(p.name)} only</div>
+  <div class="tS" style="color:${R.c}">${R.e} ${R.n}</div></div></div></div>
+ ${acts?`<h2 class="tL">${q}</h2>
+ <div class="stack tight" style="margin-top:16px">
+ ${targets.map(k=>`<button class="btn" data-n="${k}"><div class="l"><span style="display:flex;align-items:center;gap:10px">
+  <span class="dot" style="background:${PC[k%PC.length]}"></span>${esc(M.players[k].name)}${k===i?" (yourself)":""}</span></div></button>`).join("")}
+ </div><div class="gap"></div><button class="btn p" id="lk" disabled>Lock it in</button>`
+ :`<div class="ctr" style="padding-top:30px"><div style="font-size:46px">😴</div>
+ <h2 class="tL" style="margin:16px 0 12px">You sleep.</h2>
+ <p class="sm" style="max-width:28ch;margin:0 auto">Nothing to do tonight. Wait a moment before you pass it on, or you'll give yourself away.</p>
+ <div class="gap lg"></div><button class="btn p" id="lk">Done</button></div>`}
+ </div>`,()=>{
+  document.querySelectorAll("[data-n]").forEach(b=>b.onclick=()=>{
+   sel=+b.dataset.n;SFX.tap();
+   document.querySelectorAll("[data-n]").forEach(x=>x.classList.toggle("sel",x===b));
+   $("#lk").disabled=false;
+  });
+  $("#lk").onclick=()=>{
+   SFX.lock();
+   if(p.role==="imp"&&sel!==null)M.night.picks[i]=sel;
+   if(p.role==="doc"&&sel!==null)M.night.save=sel;
+   if(p.role==="cop"&&sel!==null){M.night.check=sel;return wipeTo(()=>S.copRes(sel));}
+   M.idx++;wipeTo(()=>M.idx<M.order.length?S.nHand():S.dawn());
+  };
+ });
+};
+S.copRes=(t)=>{
+ const isImp=MROLES[M.players[t].role].team==="mafia";
+ render(`<div class="anim ctr" style="padding-top:60px">
+ <div class="kick">investigation result</div>
+ <div style="margin:22px 0 10px">${avatar(t,M.players[t].name,84)}</div>
+ <h2 class="tL" style="margin:8px 0 14px">${esc(M.players[t].name)}</h2>
+ <div class="card ${isImp?"hot":"cool"}" style="max-width:320px;margin:0 auto">
+  <div class="tM" style="color:${isImp?"var(--red2)":"var(--blue)"}">${isImp?"🔪 IMPOSTER":"🙂 NOT AN IMPOSTER"}</div>
+  <p class="sm" style="margin:10px 0 0">${isImp?"They are on the other side. Getting the room to believe you is a different problem.":"Clean, as far as tonight goes. That includes the Jester, if there's one."}</p></div>
+ <div class="gap lg"></div><button class="btn p" id="g">Memorise it &amp; pass on</button></div>`,()=>{
+  $("#g").onclick=()=>{SFX.lock();M.idx++;wipeTo(()=>M.idx<M.order.length?S.nHand():S.dawn());};
+ });
+};
+S.dawn=()=>{
+ const picks=Object.values(M.night.picks);
+ let victim=null;
+ if(picks.length){
+  const c={};picks.forEach(v=>c[v]=(c[v]||0)+1);
+  const mx=Math.max(...Object.values(c));
+  victim=+pick(Object.keys(c).filter(k=>c[k]===mx));
+ }
+ let saved=false;
+ if(victim!==null&&M.night.save===victim){saved=true;victim=null;}
+ if(victim!==null)M.players[victim].alive=false;
+ M.log.push({night:M.day,victim,saved});
+ const over=mCheckWin();
+ render(`<div class="anim ctr" style="padding-top:56px">
+ <div style="font-size:46px">${victim!==null?"💀":"☀️"}</div>
+ <div class="kick" style="margin-top:14px">morning ${M.day}</div>
+ ${victim!==null?`<div style="margin:20px 0 6px">${avatar(victim,M.players[victim].name,84)}</div>
+  <h2 class="tL shake" style="margin:10px 0 14px">${esc(M.players[victim].name)}</h2>
+  <p class="lede">${pick(MDEATH)}</p>
+  <div class="card t" style="margin-top:18px"><div class="kick">they were</div>
+   <div class="tM" style="color:${MROLES[M.players[victim].role].c};margin-top:8px">${MROLES[M.players[victim].role].e} ${MROLES[M.players[victim].role].n}</div></div>`
+ :`<h2 class="tL" style="margin:18px 0 14px">Nobody died.</h2><p class="lede">${pick(MSAVED)}</p>`}
+ <div class="rule"></div>
+ <div class="wrap" style="justify-content:center">${M.players.map((p,i)=>chip(i,p.name,!p.alive)).join("")}</div>
+ <div class="gap lg"></div>
+ <button class="btn p" id="g">${over?"See how it ended":"Open the floor"}</button></div>`,()=>{
+  victim!==null?SFX.fail():SFX.win();
+  $("#g").onclick=()=>{SFX.flip();wipeTo(()=>over?S.mOver(over):S.mDisc());};
+ });
+};
+function mCheckWin(){
+ const m=mafiaAlive().length,tot=aliveIdx().length;
+ if(m===0)return {w:"town",t:"THE FLAT WINS"};
+ if(m*2>=tot)return {w:"mafia",t:"THE IMPOSTERS WIN"};
+ return null;
+}
+S.mDisc=()=>{
+ let left=MD.time,total=MD.time,paused=false;const R=104,C=2*Math.PI*R;
+ render(`<div class="anim ctr" style="padding-top:8px">
+ <div class="kick">day ${M.day} · discussion</div>
+ <div class="ring" style="margin-top:16px">
+  <svg width="236" height="236" viewBox="0 0 236 236">
+   <circle cx="118" cy="118" r="${R}" fill="none" stroke="#1e1a27" stroke-width="9"/>
+   <circle id="arc" cx="118" cy="118" r="${R}" fill="none" stroke="url(#gr2)" stroke-width="9" stroke-linecap="round" stroke-dasharray="${C}"/>
+   <defs><linearGradient id="gr2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#a97bff"/><stop offset="100%" stop-color="#ff4d6d"/></linearGradient></defs></svg>
+  <div class="mid"><div><div class="clock" id="ck">${mmss(left)}</div><div class="xs ctr" style="margin-top:6px">${aliveIdx().length} alive</div></div></div></div>
+ <p class="lede" style="margin-top:18px">Accuse. Defend. Somebody hangs at the end of this.</p>
+ <div class="wrap" style="justify-content:center;margin-top:16px">${M.players.map((p,i)=>chip(i,p.name,!p.alive)).join("")}</div>
+ <div class="row" style="margin-top:18px"><button class="btn s" id="pz">Pause</button><button class="btn s" id="pl">+1 min</button></div>
+ <div class="gap"></div><button class="btn p" id="en">Go to the vote</button></div>`,()=>{
+  const ck=$("#ck"),arc=$("#arc"),draw=()=>arc.setAttribute("stroke-dashoffset",String(C*(1-left/total)));
+  draw();
+  TIMER=setInterval(()=>{if(paused)return;left--;
+   if(left<=0){clearInterval(TIMER);SFX.alert();return S.mVoteStart();}
+   ck.textContent=mmss(left);draw();
+   if(left<=10){ck.classList.add("warn");SFX.tick();}else if(left<=30&&left%5===0)SFX.tick();},1000);
+  $("#pz").onclick=e=>{paused=!paused;e.target.textContent=paused?"Resume":"Pause";SFX.tap();};
+  $("#pl").onclick=()=>{left+=60;total+=60;ck.textContent=mmss(left);draw();toast("+1 minute");};
+  $("#en").onclick=()=>{clearInterval(TIMER);SFX.lock();S.mVoteStart();};
+ });
+};
+S.mVoteStart=()=>{M.votes={};M.idx=0;M.order=shuffle(aliveIdx());wipeTo(()=>S.mVH());};
+S.mVH=()=>{
+ const i=M.order[M.idx],p=M.players[i];
+ render(`<div class="ctr anim" style="padding-top:52px">${avatar(i,p.name,84)}
+ <div class="kick" style="margin-top:6px">pass the phone to</div>
+ <h2 class="tXL" style="margin:12px 0 20px;font-size:clamp(36px,12vw,54px)">${esc(p.name)}</h2>
+ <button class="btn p" id="g">I'm ${esc(p.name)}</button>
+ <div class="xs" style="margin-top:14px">${M.idx+1} of ${M.order.length}</div></div>`,()=>{
+  $("#g").onclick=()=>{SFX.flip();wipeTo(()=>S.mVote());};
+ });
+};
+S.mVote=()=>{
+ const i=M.order[M.idx];let sel=null;
+ render(`<div class="anim">
+ <div class="card hot" style="padding:12px 14px;margin-bottom:16px"><div style="display:flex;align-items:center;gap:11px">
+  ${avatar(i,M.players[i].name,40)}<div><div class="kick red">sealed ballot</div><div class="tS">${esc(M.players[i].name)} only.</div></div></div></div>
+ <h2 class="tL">Who hangs?</h2>
+ <div class="stack tight" style="margin-top:16px">
+ ${aliveIdx().filter(k=>k!==i).map(k=>`<button class="btn" data-v="${k}"><div class="l"><span style="display:flex;align-items:center;gap:10px">
+  <span class="dot" style="background:${PC[k%PC.length]}"></span>${esc(M.players[k].name)}</span></div></button>`).join("")}
+ <button class="btn gh" data-v="-1">Abstain — nobody</button></div>
+ <div class="gap"></div><button class="btn p" id="lk" disabled>Lock it in</button></div>`,()=>{
+  document.querySelectorAll("[data-v]").forEach(b=>b.onclick=()=>{
+   sel=+b.dataset.v;SFX.tap();
+   document.querySelectorAll("[data-v]").forEach(x=>x.classList.toggle("sel",x===b));$("#lk").disabled=false;});
+  $("#lk").onclick=()=>{if(sel===null)return;if(sel>=0)M.votes[i]=sel;SFX.lock();M.idx++;
+   wipeTo(()=>M.idx<M.order.length?S.mVH():S.mVoteRes());};
+ });
+};
+S.mVoteRes=()=>{
+ const t={};Object.values(M.votes).forEach(v=>t[v]=(t[v]||0)+1);
+ const mx=Math.max(0,...Object.values(t));
+ const top=Object.keys(t).filter(k=>t[k]===mx).map(Number);
+ const elim=(mx>0&&top.length===1)?top[0]:null;
+ if(elim!==null)M.players[elim].alive=false;
+ const jester=elim!==null&&M.players[elim].role==="jest";
+ const over=jester?{w:"jester",t:"THE JESTER WINS",who:elim}:mCheckWin();
+ render(`<div class="anim ctr" style="padding-top:40px">
+ <div class="kick">the vote</div>
+ <div class="wrap" style="justify-content:center;margin:16px 0">${Object.keys(t).map(k=>`<span class="pill ${+k===elim?"rd":""}">${esc(M.players[k].name)} · ${t[k]}</span>`).join("")||`<span class="pill">everybody abstained</span>`}</div>
+ ${elim!==null?`<div style="margin:12px 0 6px">${avatar(elim,M.players[elim].name,84)}</div>
+  <h2 class="tL shake" style="margin:10px 0 12px">${esc(M.players[elim].name)} is out</h2>
+  <div class="card ${MROLES[M.players[elim].role].team==="mafia"?"hot":"cool"}" style="max-width:330px;margin:0 auto">
+   <div class="kick">they were</div><div class="tM" style="margin-top:8px;color:${MROLES[M.players[elim].role].c}">${MROLES[M.players[elim].role].e} ${MROLES[M.players[elim].role].n}</div></div>`
+ :`<h2 class="tL" style="margin:16px 0 12px">Tie. Nobody hangs.</h2><p class="lede">The flat couldn't agree. Night falls anyway.</p>`}
+ <div class="rule"></div>
+ <div class="wrap" style="justify-content:center">${M.players.map((p,i)=>chip(i,p.name,!p.alive)).join("")}</div>
+ <div class="gap lg"></div>
+ <button class="btn p" id="g">${over?"See how it ended":"Night falls"}</button></div>`,()=>{
+  elim!==null&&MROLES[M.players[elim].role].team==="mafia"?SFX.win():SFX.fail();
+  $("#g").onclick=()=>{SFX.flip();wipeTo(()=>over?S.mOver(over):S.night());};
+ });
+};
+S.mOver=(res)=>{
+ const winners=res.w==="jester"?[res.who]
+  :M.players.map((p,i)=>i).filter(i=>MROLES[M.players[i].role].team===(res.w==="mafia"?"mafia":"town")&&M.players[i].role!=="jest");
+ render(`<div class="anim ctr" style="padding-top:44px">
+ <div class="kick">game over · ${M.day} night${M.day>1?"s":""}</div>
+ <h2 class="tXL" style="margin:16px 0 10px;font-size:clamp(34px,11vw,52px);color:${res.w==="mafia"?"var(--red2)":res.w==="jester"?"var(--violet)":"var(--green)"}">${res.t}</h2>
+ <p class="lede">${res.w==="mafia"?"They outnumbered the flat. It was over before the last vote.":res.w==="jester"?"You hanged the one person who wanted it. Congratulations, everyone.":"Every imposter is out. The flat holds."}</p>
+ <div class="rule"></div><div class="kick">everybody's cards</div>
+ <div class="stack tight" style="margin-top:12px;text-align:left">
+ ${M.players.map((p,i)=>{const R=MROLES[p.role];const w=winners.includes(i);
+  return `<div class="card ${w?"gld":"t"}" style="padding:14px"><div class="sp">
+  <span class="tS" style="display:flex;align-items:center;gap:9px"><span class="dot" style="background:${PC[i%PC.length]}"></span>${esc(p.name)}${p.alive?"":" 💀"}</span>
+  <span class="pill" style="color:${R.c};border-color:${R.c}55">${R.e} ${R.n}</span></div>
+  ${w?`<div class="xs gold" style="margin-top:6px">winner</div>`:""}</div>`;}).join("")}</div>
+ <div class="gap lg"></div>
+ <div class="stack"><button class="btn p" id="ag">🔥 Run it back</button>
+ <button class="btn" data-go="msetup">Change the line-up</button>
+ <button class="btn gh" data-go="home">Main menu</button></div></div>`,()=>{
+  SFX.win();
+  $("#ag").onclick=()=>{mNew(M.players.map(p=>p.name));SFX.rev();wipeTo(()=>S.mIntro());};
+ });
+};
+
+/* ============================================================
+   SOLO DOSSIER (1–2 people)
+   ============================================================ */
+S.solo=()=>{
+ const m=pick(MIS),sc=SCEN[rnd(SCEN.length)];
+ const nm=D.names.filter(Boolean);
+ const map={a:nm[1]||"your roommate",b:nm[2]||"the other one",c:nm[3]||"whoever's around"};
+ const text=m[0].replace(/\{a\}/g,map.a).replace(/\{b\}/g,map.b);
+ render(`${head("SOLO DOSSIER",`<button class="icb" data-go="home">Back</button>`)}
+ <div class="anim"><h2 class="tL">One agenda.<br>No game required.</h2>
+ <p class="sm" style="margin:12px 0 18px">Not enough people for a real round? Take a mission and run it on the flat anyway. Nobody else has to know this screen exists.</p>
+ <div class="card t"><div class="kick">tonight's setting</div>
+  <h3 class="tM" style="margin:8px 0 10px">${esc(sc[0])}</h3>
+  <p class="sm" style="margin:0;white-space:pre-line">${esc(sub(sc[2],map))}</p></div>
+ <div style="height:12px"></div>
+ <div class="dossier"><span class="stamp">EYES ONLY</span><div class="kick">your mission · ${DIFF[m[1]][1]} ${DIFF[m[1]][0]}</div>
+  <p style="margin:10px 0 0;font-size:18px;line-height:1.45">${esc(text)}</p></div>
+ <div style="height:12px"></div>
+ <div class="card cool"><div class="kick blue">how they'd stop you</div><p class="sm" style="margin:8px 0 0">${esc(m[2])}</p></div>
+ <div class="gap lg"></div>
+ <div class="row"><button class="btn s p" id="re">Another mission</button><button class="btn s gh" data-go="setup">Play properly</button></div></div>`,()=>{
+  $("#re").onclick=()=>{SFX.flip();S.solo();};
+ });
+};
+
+/* ============================================================
+   ROUTER + BOOT
+   ============================================================ */
+function go(name){
+ clearInterval(TIMER);
+ const map={home:S.home,howto:S.howto,modes:S.modes,settings:S.settings,stats:S.stats,
+  setup:S.setup,tutorial:()=>S.tut(0),msetup:S.msetup,solo:S.solo,brief:S.brief,
+  res:()=>{G&&G.res?S.res():S.home();}};
+ (map[name]||S.home)();
+}
+/* Android hardware back button bridge (see MainActivity.java) */
+window.__androidBack=function(){
+ if(window.__atHome)return false;
+ clearInterval(TIMER);S.home();window.__atHome=true;return true;
+};
+if(store.get("noanim",false))document.body.classList.add("noanim");
+document.addEventListener("keydown",e=>{
+ if(e.key==="Enter"&&document.activeElement.tagName!=="INPUT"){
+  const b=document.querySelector(".btn.p:not([disabled])");if(b)b.click();}
+});
+window.addEventListener("error",()=>{});
+S.home();
+
+</script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+plugins { id 'com.android.application' }
+
+android {
+    namespace 'com.flat.trustnoone'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "com.flat.trustnoone"
+        minSdk 24
+        targetSdk 34
+        versionCode 2
+        versionName "2.0"
+    }
+
+    buildTypes {
+        debug   { applicationIdSuffix ""; }
+        release { minifyEnabled false }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            outputFileName = "TrustNoOne-${variant.name}-${variant.versionName}.apk"
+        }
+    }
+}
+
+// No dependencies at all - plain android.app.Activity + WebView.
+dependencies { }
